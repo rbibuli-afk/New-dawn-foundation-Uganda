@@ -1,0 +1,885 @@
+http://localhost:3000<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music Suggestions | Mental Health Corner</title>
+    <style>
+      :root {
+        --bg: #F2E6D0;
+        --bg-dark: #E8D8BE;
+        --cream: #F2E6D0;
+        --sand: #D9B98F;
+        --terra: #C97C5D;
+        --brown: #8F6B4A;
+        --dark: #2E2A27;
+        --white: #fffaf4;
+        --muted: rgba(46,42,39,0.72);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: linear-gradient(135deg, var(--bg), #EDE0C8);
+        color: var(--dark);
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+      }
+      a { text-decoration: none; }
+      h1, h2, h3 { font-family: 'Algerian', 'Georgia', serif; }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(46,42,39,0.92);
+        border-bottom: 1px solid rgba(201,124,93,0.2);
+      }
+      .container { width: min(100%, 72rem); margin: 0 auto; padding: 0 1.5rem; }
+      .topbar-inner {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 700;
+        color: var(--cream);
+      }
+      .brand-mark {
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--terra), var(--sand));
+        color: var(--white);
+      }
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .nav a { color: var(--cream); }
+      .nav a:hover { color: var(--white); }
+      .page {
+        min-height: calc(100vh - 140px);
+        padding: 4rem 0 5rem;
+      }
+      .card {
+        background: rgba(255,255,255,0.72);
+        border: 1px solid rgba(143,107,74,0.18);
+        border-radius: 1.5rem;
+        box-shadow: 0 12px 30px rgba(143,107,74,0.08);
+        padding: 2rem;
+        margin-bottom: 2rem;
+      }
+      .hero-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        align-items: center;
+        margin-bottom: 1.25rem;
+      }
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.5rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(201,124,93,0.12);
+        color: var(--brown);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.06rem;
+        text-transform: uppercase;
+      }
+      .status-pill::before {
+        content: "";
+        width: 0.6rem;
+        height: 0.6rem;
+        border-radius: 50%;
+        background: #4caf7a;
+        box-shadow: 0 0 0 3px rgba(76,175,122,0.18);
+      }
+      .mini-note {
+        display: inline-block;
+        padding: 0.85rem 1rem;
+        border-radius: 1rem;
+        background: rgba(143,107,74,0.06);
+        border: 1px solid rgba(143,107,74,0.12);
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .eyebrow {
+        margin: 0 0 1rem;
+        color: var(--terra);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.2rem;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0 0 1rem;
+        font-size: clamp(2.2rem, 5vw, 3.5rem);
+        color: var(--dark);
+      }
+      p {
+        margin: 0 0 1rem;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+      .player-box {
+        background: rgba(46,42,39,0.96);
+        border-radius: 1.25rem;
+        padding: 1.5rem;
+        color: var(--white);
+        margin-top: 1.5rem;
+      }
+      .spotify-link {
+        display: inline-block;
+        margin-top: 0.5rem;
+        color: var(--cream);
+        font-size: 0.82rem;
+        font-weight: 700;
+      }
+      .daily-result {
+        margin: 0;
+        padding: 1rem;
+        background: rgba(255,255,255,0.72);
+        border: 1px solid rgba(143,107,74,0.14);
+        border-radius: 0.8rem;
+        color: var(--dark);
+        line-height: 1.6;
+      }
+      .daily-result strong {
+        color: var(--terra);
+        display: block;
+        margin-bottom: 0.2rem;
+      }
+      .daily-result img {
+        display: block;
+        width: 100%;
+        max-width: 12rem;
+        height: 12rem;
+        object-fit: cover;
+        border-radius: 0.8rem;
+        margin-bottom: 0.75rem;
+        border: 1px solid rgba(143,107,74,0.14);
+      }
+      .mood-section { margin-top: 2.5rem; }
+      .section-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        margin-bottom: 1rem;
+      }
+      .mood-section h2 { margin: 0; }
+      .mood-section > p, .section-header p { margin-bottom: 1rem; }
+      .spotify-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+      .spotify-track,
+      .spotify-search-card {
+        min-width: 0;
+        min-height: 260px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1rem;
+        border-radius: 1rem;
+        background: rgba(46,42,39,0.94);
+        color: var(--white);
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 0 12px 22px rgba(46,42,39,0.18);
+        transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+      }
+      .spotify-track iframe { display: block; width: 100%; border: 0; border-radius: 0.75rem; }
+      .spotify-track:hover,
+      .spotify-search-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(201,124,93,0.5);
+        box-shadow: 0 18px 30px rgba(46,42,39,0.22);
+      }
+      .cover-art {
+        display: block;
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 0.75rem;
+        margin-bottom: 0.8rem;
+        border: 1px solid rgba(255,255,255,0.08);
+      }
+      .spotify-search-card strong,
+      .spotify-track strong {
+        font-size: 1.05rem;
+        line-height: 1.4;
+        margin-top: 0.15rem;
+      }
+      .spotify-search-card span,
+      .spotify-track span {
+        margin-top: 0.3rem;
+        color: rgba(242,230,208,0.75);
+        font-size: 0.85rem;
+      }
+      .spotify-search-card .spotify-link,
+      .spotify-track .spotify-link {
+        color: var(--cream);
+        margin-top: auto;
+        padding-top: 0.75rem;
+      }
+      .player-box h2 {
+        margin: 0 0 0.4rem;
+        font-size: 1.35rem;
+        color: var(--white);
+      }
+      .player-meta {
+        margin: 0 0 1rem;
+        color: rgba(242,230,208,0.8);
+        font-size: 0.9rem;
+      }
+      .playlist {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+      }
+      .music-assistant {
+        margin: 1.5rem 0 2rem;
+        padding: 1.25rem;
+        border-radius: 1.2rem;
+        background: rgba(46,42,39,0.96);
+        color: var(--white);
+      }
+      .music-assistant h3 {
+        margin: 0 0 0.8rem;
+        color: var(--white);
+      }
+      .assistant-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      select {
+        appearance: none;
+        -webkit-appearance: none;
+        border-radius: 999px;
+        border: 1px solid rgba(143,107,74,0.25);
+        background: rgba(255,255,255,0.9);
+        color: #2e2a27;
+        padding: 0.75rem 1rem;
+        font: inherit;
+        font-weight: 700;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25);
+      }
+      select option {
+        color: #2e2a27;
+        background: #fffaf4;
+      }
+      #mood-select,
+      #assistant-mood,
+      #assistant-genre {
+        color: #2e2a27;
+      }
+      .assistant-controls select,
+      .assistant-controls button {
+        border-radius: 999px;
+        border: 1px solid rgba(242,230,208,0.25);
+        padding: 0.7rem 0.95rem;
+        font: inherit;
+      }
+      .assistant-controls select {
+        background: rgba(255,255,255,0.9);
+        color: var(--dark);
+        min-width: 12rem;
+      }
+      .assistant-controls button {
+        background: linear-gradient(135deg, var(--terra), var(--brown));
+        color: var(--white);
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .assistant-results {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+      }
+      .track {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem 1.1rem;
+        border-radius: 1rem;
+        background: rgba(255,255,255,0.7);
+        border: 1px solid rgba(143,107,74,0.12);
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .track:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(143,107,74,0.08);
+      }
+      .track.active {
+        border-color: rgba(201,124,93,0.45);
+        background: rgba(201,124,93,0.08);
+      }
+      .track-info {
+        display: flex;
+        flex-direction: column;
+      }
+      .track-name {
+        font-weight: 700;
+        color: var(--dark);
+      }
+      .track-detail {
+        font-size: 0.82rem;
+        color: var(--brown);
+      }
+      .play-button {
+        border: none;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--terra), var(--brown));
+        color: var(--white);
+        padding: 0.6rem 0.9rem;
+        font-weight: 700;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin: 1.5rem 0 0;
+      }
+      .tags span {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(201,124,93,0.12);
+        color: var(--brown);
+        font-size: 0.76rem;
+        font-weight: 700;
+      }
+      .button {
+        display: inline-flex;
+        padding: 0.9rem 1.5rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--terra), var(--brown));
+        color: var(--white);
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+      }
+      footer {
+        padding: 2rem 1.5rem;
+        background: var(--dark);
+        border-top: 1px solid rgba(217,185,143,0.15);
+        text-align: center;
+        color: rgba(242,230,208,0.7);
+      }
+      @media (max-width: 760px) {
+        .topbar-inner { justify-content: center; }
+        .playlist { grid-template-columns: 1fr; }
+        .assistant, .spotify-grid, .curated-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div class="brand">
+          <span class="brand-mark">✦</span>
+          <span>New Dawn Foundation Uganda</span>
+        </div>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="home.html">Home</a>
+          <a href="about us.html">About Us</a>
+          <a href="mental health corner.html">Mental Health Corner</a>
+          <a href="events.html">Events</a>
+          <a href="support us.html">Support Us</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <div class="container">
+        <a class="button" href="mental health corner.html">← Back to Mental Health Corner</a>
+        <div class="card">
+          <div class="hero-strip">
+            <span class="status-pill">Ready to listen</span>
+            <span class="mini-note">Curated for calm, focus, joy, and release.</span>
+          </div>
+          <p class="eyebrow">Music Suggestions</p>
+          <h1>Let your mood guide the melody.</h1>
+          <p>Music can soften stress, lift guilt, and help your emotions feel less heavy when they are difficult to name. This activity is for moments when you want a soundtrack that understands your current energy.</p>
+          <p><strong>Try this:</strong> choose one song for each feeling you are carrying today — one for calm, one for clarity, and one for release. You do not need a perfect playlist; you only need a few tracks that make you feel seen.</p>
+          <p>Every song below is a recommended track you can open in YouTube Music. The direct links below make it easy to listen on your preferred device without depending on Spotify access.</p>
+        </div>
+
+        <div class="card">
+          <p class="eyebrow">Song of the day</p>
+          <h2>Your mood, today's song.</h2>
+          <label for="mood-select">What are you carrying today?</label>
+          <select id="mood-select">
+            <option value="calm">I need calm</option>
+            <option value="lift">I need a lift</option>
+            <option value="release">I need to release</option>
+            <option value="focus">I need focus</option>
+            <option value="connection">I want connection</option>
+          </select>
+          <p class="daily-result" id="daily-result" aria-live="polite"></p>
+        </div>
+
+        <div class="card music-assistant">
+          <p class="eyebrow">AI music helper</p>
+          <h3>Find songs that feel inclusive and global.</h3>
+          <div class="assistant-controls">
+            <select id="assistant-mood">
+              <option value="calm">Calm</option>
+              <option value="lift">Lift</option>
+              <option value="release">Release</option>
+              <option value="focus">Focus</option>
+              <option value="connection">Connection</option>
+            </select>
+            <select id="assistant-genre">
+              <option value="all">All genres</option>
+              <option value="afro">Afro</option>
+              <option value="amapiano">Amapiano</option>
+              <option value="ugandan">Ugandan</option>
+              <option value="caribbean">Caribbean</option>
+              <option value="reggae">Reggae</option>
+              <option value="gospel">Gospel</option>
+              <option value="jazz">Jazz</option>
+              <option value="soul">Soul</option>
+              <option value="pop">Pop</option>
+            </select>
+            <button id="assistant-generate" type="button">Suggest songs</button>
+          </div>
+          <div class="assistant-results" id="assistant-results"></div>
+        </div>
+
+        <div class="card">
+          <p class="eyebrow">Browse By Feeling</p>
+          <section class="mood-section" id="calm">
+            <div class="section-header">
+              <h2>Calm and grounded</h2>
+              <p>For breathing room, softness, and quiet reflection.</p>
+            </div>
+            <div class="spotify-grid">
+              <div class="spotify-track"><iframe src="https://open.spotify.com/embed/track/7LVHVU3tWfcxj5aiPFEW4Q" height="152" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe><a class="spotify-link" href="https://open.spotify.com/track/7LVHVU3tWfcxj5aiPFEW4Q" target="_blank" rel="noopener">Fix You - Coldplay</a></div>
+              <div class="spotify-track"><iframe src="https://open.spotify.com/embed/track/6dGnYIeXmHdcikdzNNDMm2" height="152" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe><a class="spotify-link" href="https://open.spotify.com/track/6dGnYIeXmHdcikdzNNDMm2" target="_blank" rel="noopener">Here Comes the Sun - The Beatles</a></div>
+              <div class="spotify-track"><iframe src="https://open.spotify.com/embed/track/3YJJjQPAbDT7mGpX3WtQ9A" height="152" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe><a class="spotify-link" href="https://open.spotify.com/track/3YJJjQPAbDT7mGpX3WtQ9A" target="_blank" rel="noopener">Good Days - SZA</a></div>
+              <div class="spotify-search-card" data-query="Weightless Marconi Union">
+                <img class="cover-art" src="assets/music-covers/weightless.jpg" alt="Weightless cover art" />
+                <strong>Weightless</strong><span>Marconi Union - ambient</span><a class="spotify-link" href="https://music.youtube.com/search?q=Weightless%20Marconi%20Union" target="_blank" rel="noopener">Open this song on YouTube Music</a>
+              </div>
+              <div class="spotify-search-card" data-query="Suzanna Sauti Sol">
+                <img class="cover-art" src="assets/music-covers/suzanna.jpg" alt="Suzanna cover art" />
+                <strong>Suzanna</strong><span>Sauti Sol - Afro-pop</span><a class="spotify-link" href="https://music.youtube.com/search?q=Suzanna%20Sauti%20Sol" target="_blank" rel="noopener">Open this song on YouTube Music</a>
+              </div>
+            </div>
+          </section>
+          <section class="mood-section" id="lift">
+            <h2>Joy and energy</h2>
+            <p>For movement, confidence, celebration, and a brighter reset.</p>
+            <div class="spotify-grid">
+              <div class="spotify-search-card" data-query="Dancing Queen ABBA">
+                <img class="cover-art" src="assets/music-covers/dancing-queen.jpg" alt="Dancing Queen cover art" />
+                <strong>Dancing Queen</strong><span>ABBA</span><a class="spotify-link" href="https://music.youtube.com/search?q=Dancing%20Queen%20ABBA" target="_blank" rel="noopener">Open this song on YouTube Music</a>
+              </div>
+              <div class="spotify-track"><iframe src="https://open.spotify.com/embed/track/0V3wPSX9ygBnCm8psDIegu" height="152" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe><a class="spotify-link" href="https://open.spotify.com/track/0V3wPSX9ygBnCm8psDIegu" target="_blank" rel="noopener">Anti-Hero - Taylor Swift</a></div>
+              <div class="spotify-track"><iframe src="https://open.spotify.com/embed/track/6AI3ezQ4o3HUoP6Dhudph3" height="152" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe><a class="spotify-link" href="https://open.spotify.com/track/6AI3ezQ4o3HUoP6Dhudph3" target="_blank" rel="noopener">Not Like Us - Kendrick Lamar</a></div>
+              <div class="spotify-search-card" data-query="Water Tyla">
+                <img class="cover-art" src="assets/music-covers/water.jpg" alt="Water cover art" />
+                <strong>Water</strong><span>Tyla - amapiano / pop</span><a class="spotify-link" href="https://music.youtube.com/search?q=Water%20Tyla" target="_blank" rel="noopener">Open this song on YouTube Music</a>
+              </div>
+              <div class="spotify-search-card" data-query="Jerusalema Master KG Nomcebo Zikode">
+                <img class="cover-art" src="assets/music-covers/jerusalema.jpg" alt="Jerusalema cover art" />
+                <strong>Jerusalema</strong><span>Master KG feat. Nomcebo Zikode - amapiano</span><a class="spotify-link" href="https://music.youtube.com/search?q=Jerusalema%20Master%20KG%20Nomcebo%20Zikode" target="_blank" rel="noopener">Open this song on YouTube Music</a>
+              </div>
+              <div class="spotify-search-card" data-query="Three Little Birds Bob Marley">
+                <img class="cover-art" src="assets/music-covers/three-little-birds.jpg" alt="Three Little Birds cover art" />
+                <strong>Three Little Birds</strong><span>Bob Marley &amp; The Wailers - reggae</span><a class="spotify-link" href="https://music.youtube.com/search?q=Three%20Little%20Birds%20Bob%20Marley" target="_blank" rel="noopener">Open this song on YouTube Music</a>
+              </div>
+            </div>
+          </section>
+          <section class="mood-section" id="release">
+            <h2>Release and expression</h2>
+            <p>For letting the feeling move through you without having to explain it.</p>
+            <div class="spotify-grid">
+              <div class="spotify-track"><iframe src="https://open.spotify.com/embed/track/3SdTKo2uVsxFblQjpScoHy" height="152" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe><a class="spotify-link" href="https://open.spotify.com/track/3SdTKo2uVsxFblQjpScoHy" target="_blank" rel="noopener">Stand by Me - Ben E. King</a></div>
+              <div class="spotify-track"><iframe src="https://open.spotify.com/embed/track/0tgVpDi06FyKpA1z0VMD4v" height="152" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe><a class="spotify-link" href="https://open.spotify.com/track/0tgVpDi06FyKpA1z0VMD4v" target="_blank" rel="noopener">Perfect - Ed Sheeran</a></div>
+              <div class="spotify-search-card" data-query="Someone Like You Adele">
+                <img class="cover-art" src="assets/music-covers/dancing-queen.jpg" alt="Someone Like You cover art" />
+                <strong>Someone Like You</strong><span>Adele - modern soul</span><a class="spotify-link" href="https://music.youtube.com/search?q=Someone%20Like%20You%20Adele" target="_blank" rel="noopener">Open this song on YouTube Music</a>
+              </div>
+              <div class="spotify-search-card" data-query="Ex-Factor Lauryn Hill">
+                <img class="cover-art" src="assets/music-covers/weightless.jpg" alt="Ex-Factor cover art" />
+                <strong>Ex-Factor</strong><span>Lauryn Hill - R&amp;B / hip-hop</span><a class="spotify-link" href="https://music.youtube.com/search?q=Ex-Factor%20Lauryn%20Hill" target="_blank" rel="noopener">Open this song on YouTube Music</a>
+              </div>
+            </div>
+          </section>
+          <section class="mood-section" id="focus">
+            <h2>Focus and steady work</h2>
+            <p>For study, journaling, creative work, or taking one next step.</p>
+            <div class="spotify-grid">
+              <div class="spotify-track"><iframe src="https://open.spotify.com/embed/track/2grjqo0Frpf2okIBiifQKs" height="152" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe><a class="spotify-link" href="https://open.spotify.com/track/2grjqo0Frpf2okIBiifQKs" target="_blank" rel="noopener">September - Earth, Wind &amp; Fire</a></div>
+              <div class="spotify-track"><iframe src="https://open.spotify.com/embed/track/0VjIjW4GlUZAMYd2vXMi3b" height="152" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe><a class="spotify-link" href="https://open.spotify.com/track/0VjIjW4GlUZAMYd2vXMi3b" target="_blank" rel="noopener">Blinding Lights - The Weeknd</a></div>
+              <div class="spotify-search-card" data-query="Essence Wizkid Tems">
+                <img class="cover-art" src="assets/music-covers/water.jpg" alt="Essence cover art" />
+                <strong>Essence</strong><span>Wizkid feat. Tems - Afrobeat</span><a class="spotify-link" href="https://music.youtube.com/search?q=Essence%20Wizkid%20Tems" target="_blank" rel="noopener">Open this song on YouTube Music</a>
+              </div>
+              <div class="spotify-search-card" data-query="Everything In Its Right Place Radiohead">
+                <img class="cover-art" src="assets/music-covers/three-little-birds.jpg" alt="Everything In Its Right Place cover art" />
+                <strong>Everything In Its Right Place</strong><span>Radiohead - indie / alternative</span><a class="spotify-link" href="https://music.youtube.com/search?q=Everything%20In%20Its%20Right%20Place%20Radiohead" target="_blank" rel="noopener">Open this song on YouTube Music</a>
+              </div>
+              <div class="spotify-search-card" data-query="So What Miles Davis">
+                <img class="cover-art" src="assets/music-covers/dancing-queen.jpg" alt="So What cover art" />
+                <strong>So What</strong><span>Miles Davis - jazz</span><a class="spotify-link" href="https://music.youtube.com/search?q=So%20What%20Miles%20Davis" target="_blank" rel="noopener">Open this song on YouTube Music</a>
+              </div>
+            </div>
+          </section>
+          <section class="mood-section" id="connection">
+            <h2>Connection and belonging</h2>
+            <p>For remembering that your story can meet other people's stories.</p>
+            <div class="spotify-grid">
+              <div class="spotify-search-card" data-query="Lean on Me Bill Withers">
+                <img class="cover-art" src="assets/music-covers/suzanna.jpg" alt="Lean on Me cover art" />
+                <strong>Lean on Me</strong><span>Bill Withers</span><a class="spotify-link" href="https://music.youtube.com/search?q=Lean%20on%20Me%20Bill%20Withers" target="_blank" rel="noopener">Open this song on YouTube Music</a>
+              </div>
+              <div class="spotify-search-card" data-query="Count on Me Bruno Mars">
+                <img class="cover-art" src="assets/music-covers/jerusalema.jpg" alt="Count on Me cover art" />
+                <strong>Count on Me</strong><span>Bruno Mars</span><a class="spotify-link" href="https://music.youtube.com/search?q=Count%20on%20Me%20Bruno%20Mars" target="_blank" rel="noopener">Open this song on YouTube Music</a>
+              </div>
+              <div class="spotify-search-card" data-query="You've Got a Friend Carole King">
+                <img class="cover-art" src="assets/music-covers/weightless.jpg" alt="You've Got a Friend cover art" />
+                <strong>You've Got a Friend</strong><span>Carole King - oldies / singer-songwriter</span><a class="spotify-link" href="https://music.youtube.com/search?q=You%27ve%20Got%20a%20Friend%20Carole%20King" target="_blank" rel="noopener">Open this song on YouTube Music</a>
+              </div>
+              <div class="spotify-search-card" data-query="We Are Family Sister Sledge">
+                <img class="cover-art" src="assets/music-covers/water.jpg" alt="We Are Family cover art" />
+                <strong>We Are Family</strong><span>Sister Sledge - disco / soul</span><a class="spotify-link" href="https://music.youtube.com/search?q=We%20Are%20Family%20Sister%20Sledge" target="_blank" rel="noopener">Open this song on YouTube Music</a>
+              </div>
+            </div>
+          </section>
+        </div>
+
+      </div>
+    </main>
+
+    <footer>
+      &copy; 2026 New Dawn Foundation Uganda
+    </footer>
+
+    <script>
+      const assistantCatalog = [
+        { title: 'Jerusalema', artist: 'Master KG feat. Nomcebo Zikode', mood: 'lift', genres: ['amapiano', 'afro', 'ugandan', 'africa'], cover: 'assets/music-covers/jerusalema.jpg', link: 'https://music.youtube.com/search?q=Jerusalema%20Master%20KG%20Nomcebo%20Zikode' },
+        { title: 'Water', artist: 'Tyla', mood: 'lift', genres: ['amapiano', 'pop', 'afro', 'africa'], cover: 'assets/music-covers/water.jpg', link: 'https://music.youtube.com/search?q=Water%20Tyla' },
+        { title: 'Love Nwantiti', artist: 'CKay', mood: 'joy', genres: ['afro', 'afrobeat', 'africa', 'pop'], cover: 'assets/music-covers/water.jpg', link: 'https://music.youtube.com/search?q=Love%20Nwantiti%20CKay' },
+        { title: 'Malaika', artist: 'Miriam Makeba', mood: 'calm', genres: ['ugandan', 'afro', 'africa', 'gospel'], cover: 'assets/music-covers/suzanna.jpg', link: 'https://music.youtube.com/search?q=Malaika%20Miriam%20Makeba' },
+        { title: 'No Woman No Cry', artist: 'Bob Marley', mood: 'connection', genres: ['reggae', 'caribbean', 'afro'], cover: 'assets/music-covers/three-little-birds.jpg', link: 'https://music.youtube.com/search?q=No%20Woman%20No%20Cry%20Bob%20Marley' },
+        { title: 'Three Little Birds', artist: 'Bob Marley & The Wailers', mood: 'calm', genres: ['reggae', 'caribbean'], cover: 'assets/music-covers/three-little-birds.jpg', link: 'https://music.youtube.com/search?q=Three%20Little%20Birds%20Bob%20Marley' },
+        { title: 'Soweto', artist: 'Victony & Tempoe', mood: 'release', genres: ['afro', 'afrobeat', 'africa', 'pop'], cover: 'assets/music-covers/jerusalema.jpg', link: 'https://music.youtube.com/search?q=Soweto%20Victony%20Tempoe' },
+        { title: 'Mighty River', artist: 'Alicia Keys', mood: 'connection', genres: ['soul', 'gospel', 'afro'], cover: 'assets/music-covers/weightless.jpg', link: 'https://music.youtube.com/search?q=Mighty%20River%20Alicia%20Keys' },
+        { title: 'Essence', artist: 'Wizkid feat. Tems', mood: 'focus', genres: ['afro', 'afrobeat', 'africa', 'pop'], cover: 'assets/music-covers/water.jpg', link: 'https://music.youtube.com/search?q=Essence%20Wizkid%20Tems' },
+        { title: 'Baba Yetu', artist: 'Christopher Tin', mood: 'focus', genres: ['gospel', 'afro', 'africa', 'world'], cover: 'assets/music-covers/water.jpg', link: 'https://music.youtube.com/search?q=Baba%20Yetu%20Christopher%20Tin' },
+        { title: 'Ain’t No Sunshine', artist: 'Bill Withers', mood: 'calm', genres: ['soul', 'afro'], cover: 'assets/music-covers/weightless.jpg', link: 'https://music.youtube.com/search?q=Aint%20No%20Sunshine%20Bill%20Withers' },
+        { title: 'Jamming', artist: 'Bob Marley', mood: 'joy', genres: ['reggae', 'caribbean'], cover: 'assets/music-covers/three-little-birds.jpg', link: 'https://music.youtube.com/search?q=Jamming%20Bob%20Marley' },
+        { title: 'Calm Down', artist: 'Rema & Selena Gomez', mood: 'lift', genres: ['afro', 'afrobeat', 'pop'], cover: 'assets/music-covers/water.jpg', link: 'https://music.youtube.com/search?q=Calm%20Down%20Rema%20Selena%20Gomez' },
+        { title: 'Suzanna', artist: 'Sauti Sol', mood: 'connection', genres: ['ugandan', 'afro', 'africa', 'pop'], cover: 'assets/music-covers/suzanna.jpg', link: 'https://music.youtube.com/search?q=Suzanna%20Sauti%20Sol' },
+        { title: 'Bachata', artist: 'Romeo Santos', mood: 'lift', genres: ['caribbean', 'latin', 'pop'], cover: 'assets/music-covers/dancing-queen.jpg', link: 'https://music.youtube.com/search?q=Bachata%20Romeo%20Santos' },
+        { title: 'Rapture', artist: 'Sabrina Claudio', mood: 'release', genres: ['soul', 'rnb', 'afro'], cover: 'assets/music-covers/weightless.jpg', link: 'https://music.youtube.com/search?q=Rapture%20Sabrina%20Claudio' },
+        { title: 'For the Love of Ivy', artist: 'Amandla', mood: 'focus', genres: ['gospel', 'afro', 'africa'], cover: 'assets/music-covers/suzanna.jpg', link: 'https://music.youtube.com/search?q=For%20the%20Love%20of%20Ivy%20Amandla' },
+        { title: 'The Blessing', artist: 'Elevation Worship', mood: 'connection', genres: ['gospel', 'afro', 'spiritual'], cover: 'assets/music-covers/suzanna.jpg', link: 'https://music.youtube.com/search?q=The%20Blessing%20Elevation%20Worship' },
+        { title: 'Mwanza', artist: 'Ugandan Afro Pop Mix', mood: 'joy', genres: ['ugandan', 'afro', 'africa', 'pop'], cover: 'assets/music-covers/jerusalema.jpg', link: 'https://music.youtube.com/search?q=Uganda%20Afro%20Pop' }
+      ];
+
+      function resolveAssistantCover(title) {
+        const fallbackMap = {
+          'Jerusalema': 'assets/music-covers/jerusalema.jpg',
+          'Water': 'assets/music-covers/water.jpg',
+          'Malaika': 'assets/music-covers/suzanna.jpg',
+          'Three Little Birds': 'assets/music-covers/three-little-birds.jpg',
+          'No Woman No Cry': 'assets/music-covers/three-little-birds.jpg',
+          'Soweto': 'assets/music-covers/jerusalema.jpg',
+          'Essence': 'assets/music-covers/water.jpg',
+          'Ain’t No Sunshine': 'assets/music-covers/weightless.jpg',
+          'Baba Yetu': 'assets/music-covers/water.jpg',
+          'Calm Down': 'assets/music-covers/water.jpg',
+          'Suzanna': 'assets/music-covers/suzanna.jpg',
+          'Mighty River': 'assets/music-covers/weightless.jpg',
+          'Bachata': 'assets/music-covers/dancing-queen.jpg',
+          'Rapture': 'assets/music-covers/weightless.jpg',
+          'For the Love of Ivy': 'assets/music-covers/suzanna.jpg',
+          'The Blessing': 'assets/music-covers/suzanna.jpg',
+          'Mwanza': 'assets/music-covers/jerusalema.jpg',
+          'Love Nwantiti': 'assets/music-covers/water.jpg',
+          'Jamming': 'assets/music-covers/three-little-birds.jpg'
+        };
+
+        return fallbackMap[title] || 'assets/music-covers/default-cover.jpg';
+      }
+
+      function escapeHtml(value) {
+        return value.replace(/[&<>"']/g, (character) => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[character]));
+      }
+
+      function toSpotifyUrl(query) {
+        return 'https://open.spotify.com/search/' + encodeURIComponent(query.trim());
+      }
+
+      function resolveLocalCover(query) {
+        const normalized = (query || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+        return normalized ? 'assets/music-covers/' + normalized + '.jpg' : 'assets/music-covers/default-cover.jpg';
+      }
+
+      function buildSimpleSongCard(card, titleText, queryText) {
+        const cardTitle = titleText || card.dataset.query || 'Song';
+        const query = queryText || card.dataset.query || cardTitle;
+
+        card.innerHTML = '';
+
+        const cover = document.createElement('img');
+        cover.className = 'cover-art';
+        cover.src = resolveLocalCover(cardTitle);
+        cover.onerror = () => {
+          cover.onerror = null;
+          cover.src = 'assets/music-covers/default-cover.jpg';
+        };
+        cover.alt = cardTitle + ' cover art';
+        card.appendChild(cover);
+
+        const title = document.createElement('strong');
+        title.textContent = cardTitle;
+        card.appendChild(title);
+
+        const link = document.createElement('a');
+        link.className = 'spotify-link';
+        link.href = toSpotifyUrl(query);
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.textContent = 'Listen on Spotify';
+        card.appendChild(link);
+
+      }
+
+      function normalizeSongCards() {
+        document.querySelectorAll('.spotify-track, .spotify-search-card').forEach((card) => {
+          if (card.dataset.normalized === 'true') return;
+          card.dataset.normalized = 'true';
+
+          const existingTitle = card.querySelector('strong')?.textContent?.trim();
+          const existingLink = card.querySelector('.spotify-link')?.textContent?.trim();
+          const queryText = card.dataset.query || existingLink || (existingTitle || '').replace(/\s*[-–—]\s*.*$/, '').trim();
+          const titleText = existingTitle || (existingLink || '').replace(/\s*[-–—]\s*.*$/, '').trim() || card.dataset.query || 'Song';
+
+          buildSimpleSongCard(card, titleText, queryText);
+        });
+      }
+
+      function buildMusicCard(songTitle, artistText, linkUrl, coverSrc) {
+        const card = document.createElement('div');
+        card.className = 'spotify-search-card';
+        card.dataset.query = `${songTitle} ${artistText}`;
+
+        const cover = document.createElement('img');
+        cover.className = 'cover-art';
+        cover.src = coverSrc || 'assets/music-covers/default-cover.jpg';
+        cover.alt = `${songTitle} cover art`;
+        cover.onerror = () => {
+          cover.onerror = null;
+          cover.src = 'assets/music-covers/default-cover.jpg';
+        };
+
+        const title = document.createElement('strong');
+        title.textContent = songTitle;
+
+        const meta = document.createElement('span');
+        meta.textContent = artistText;
+
+        const link = document.createElement('a');
+        link.className = 'spotify-link';
+        link.href = linkUrl;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.textContent = 'Open this song on YouTube Music';
+
+        card.append(cover, title, meta, link);
+        return card;
+      }
+
+      function renderAssistantResults(mood, genreFilter) {
+        const results = document.getElementById('assistant-results');
+        if (!results) return;
+
+        const relevant = assistantCatalog.filter((song) => {
+          const matchesMood = !mood || mood === 'all' || song.mood === mood;
+          const matchesGenre = !genreFilter || genreFilter === 'all' || song.genres.some((tag) => tag.toLowerCase().includes(genreFilter.toLowerCase()));
+          return matchesMood && matchesGenre;
+        });
+
+        const genreMatches = assistantCatalog.filter((song) => {
+          if (!genreFilter || genreFilter === 'all') return false;
+          return song.genres.some((tag) => tag.toLowerCase().includes(genreFilter.toLowerCase()));
+        });
+
+        const moodMatches = assistantCatalog.filter((song) => {
+          if (!mood || mood === 'all') return false;
+          return song.mood === mood;
+        });
+
+        const pool = [...new Map(
+          [...relevant, ...genreMatches, ...moodMatches].map((song) => [song.title + song.artist, song])
+        ).values()];
+
+        const picks = pool.length >= 5 ? pool.slice(0, 5) : [...pool, ...assistantCatalog.filter((song) => !pool.some((item) => item.title === song.title)).slice(0, 5 - pool.length)];
+
+        results.innerHTML = '';
+        picks.forEach((song) => {
+          const cover = resolveAssistantCover(song.title) || song.cover || 'assets/music-covers/default-cover.jpg';
+          const card = buildMusicCard(song.title, `${song.artist} • ${song.genres.join(', ')}`, song.link, cover);
+          results.appendChild(card);
+        });
+      }
+
+      function getTrackMetadata(query) {
+        return fetch('https://itunes.apple.com/search?term=' + encodeURIComponent(query) + '&media=music&entity=song&limit=1')
+          .then((response) => {
+            if (!response.ok) throw new Error('Metadata unavailable');
+            return response.json();
+          })
+          .then((data) => {
+            const track = data && data.results && data.results[0];
+            if (!track) return null;
+
+            return {
+              previewUrl: track.previewUrl || null,
+              artworkUrl: track.artworkUrl100 ? track.artworkUrl100.replace('100x100bb', '600x600bb') : null,
+              trackName: track.trackName || null,
+              artistName: track.artistName || null,
+            };
+          })
+          .catch(() => null);
+      }
+
+      normalizeSongCards();
+      renderAssistantResults('calm', 'all');
+
+      document.getElementById('assistant-generate')?.addEventListener('click', () => {
+        const mood = document.getElementById('assistant-mood')?.value || 'calm';
+        const genre = document.getElementById('assistant-genre')?.value || 'all';
+        renderAssistantResults(mood, genre);
+      });
+
+      const dailyTracks = {
+        calm: [
+          ['Fix You', 'Coldplay', 'https://open.spotify.com/track/7LVHVU3tWfcxj5aiPFEW4Q'],
+          ['Here Comes the Sun', 'The Beatles', 'https://open.spotify.com/track/6dGnYIeXmHdcikdzNNDMm2'],
+          ['Good Days', 'SZA', 'https://open.spotify.com/track/3YJJjQPAbDT7mGpX3WtQ9A'],
+          ['Weightless', 'Marconi Union', 'https://open.spotify.com/search/Weightless%20Marconi%20Union'],
+          ['Suzanna', 'Sauti Sol', 'https://open.spotify.com/search/Suzanna%20Sauti%20Sol'],
+          ['Bloom', 'The Paper Kites', 'https://open.spotify.com/search/Bloom%20The%20Paper%20Kites'],
+          ['River Flows in You', 'Yiruma', 'https://open.spotify.com/search/River%20Flows%20in%20You%20Yiruma'],
+          ['Holocene', 'Bon Iver', 'https://open.spotify.com/search/Holocene%20Bon%20Iver'],
+          ['Sea of Love', 'Cat Power', 'https://open.spotify.com/search/Sea%20of%20Love%20Cat%20Power'],
+          ['Turning Page', 'Sleeping at Last', 'https://open.spotify.com/search/Turning%20Page%20Sleeping%20at%20Last'],
+          ['Nuvole Bianche', 'Ludovico Einaudi', 'https://open.spotify.com/search/Nuvole%20Bianche%20Ludovico%20Einaudi'],
+          ['River', 'Leon Bridges', 'https://open.spotify.com/search/River%20Leon%20Bridges']
+        ],
+        lift: [
+          ['Dancing Queen', 'ABBA', 'https://open.spotify.com/search/Dancing%20Queen%20ABBA'],
+          ['Anti-Hero', 'Taylor Swift', 'https://open.spotify.com/track/0V3wPSX9ygBnCm8psDIegu'],
+          ['Not Like Us', 'Kendrick Lamar', 'https://open.spotify.com/track/6AI3ezQ4o3HUoP6Dhudph3'],
+          ['Water', 'Tyla', 'https://open.spotify.com/search/Water%20Tyla'],
+          ['Jerusalema', 'Master KG feat. Nomcebo Zikode', 'https://open.spotify.com/search/Jerusalema%20Master%20KG'],
+          ['Three Little Birds', 'Bob Marley & The Wailers', 'https://open.spotify.com/search/Three%20Little%20Birds%20Bob%20Marley'],
+          ['Good as Hell', 'Lizzo', 'https://open.spotify.com/search/Good%20as%20Hell%20Lizzo'],
+          ['Lovely Day', 'Bill Withers', 'https://open.spotify.com/search/Lovely%20Day%20Bill%20Withers'],
+          ['Walking on Sunshine', 'Katrina and the Waves', 'https://open.spotify.com/search/Walking%20on%20Sunshine%20Katrina'],
+          ['Uptown Funk', 'Mark Ronson feat. Bruno Mars', 'https://open.spotify.com/search/Uptown%20Funk%20Mark%20Ronson'],
+          ['Waka Waka', 'Shakira', 'https://open.spotify.com/search/Waka%20Waka%20Shakira'],
+          ['Valerie', 'Amy Winehouse', 'https://open.spotify.com/search/Valerie%20Amy%20Winehouse']
+        ],
+        release: [
+          ['Stand by Me', 'Ben E. King', 'https://open.spotify.com/track/3SdTKo2uVsxFblQjpScoHy'],
+          ['Perfect', 'Ed Sheeran', 'https://open.spotify.com/track/0tgVpDi06FyKpA1z0VMD4v'],
+          ['Someone Like You', 'Adele', 'https://open.spotify.com/search/Someone%20Like%20You%20Adele'],
+          ['Ex-Factor', 'Lauryn Hill', 'https://open.spotify.com/search/Ex-Factor%20Lauryn%20Hill'],
+          ['The Night We Met', 'Lord Huron', 'https://open.spotify.com/search/The%20Night%20We%20Met%20Lord%20Huron'],
+          ['Skinny Love', 'Bon Iver', 'https://open.spotify.com/search/Skinny%20Love%20Bon%20Iver'],
+          ['All I Want', 'Kodaline', 'https://open.spotify.com/search/All%20I%20Want%20Kodaline'],
+          ['Breathe Me', 'Sia', 'https://open.spotify.com/search/Breathe%20Me%20Sia'],
+          ['Hallelujah', 'Jeff Buckley', 'https://open.spotify.com/search/Hallelujah%20Jeff%20Buckley'],
+          ['Back to Black', 'Amy Winehouse', 'https://open.spotify.com/search/Back%20to%20Black%20Amy%20Winehouse'],
+          ['The Scientist', 'Coldplay', 'https://open.spotify.com/search/The%20Scientist%20Coldplay'],
+          ['Liability', 'Lorde', 'https://open.spotify.com/search/Liability%20Lorde']
+        ],
+        focus: [
+          ['September', 'Earth, Wind & Fire', 'https://open.spotify.com/track/2grjqo0Frpf2okIBiifQKs'],
+          ['Blinding Lights', 'The Weeknd', 'https://open.spotify.com/track/0VjIjW4GlUZAMYd2vXMi3b'],
+          ['Essence', 'Wizkid feat. Tems', 'https://open.spotify.com/search/Essence%20Wizkid%20Tems'],
+          ['Everything In Its Right Place', 'Radiohead', 'https://open.spotify.com/search/Everything%20In%20Its%20Right%20Place%20Radiohead'],
+          ['So What', 'Miles Davis', 'https://open.spotify.com/search/So%20What%20Miles%20Davis'],
+          ['Clair de Lune', 'Claude Debussy', 'https://open.spotify.com/search/Clair%20de%20Lune%20Claude%20Debussy'],
+          ['Intro', 'The xx', 'https://open.spotify.com/search/Intro%20The%20xx'],
+          ['A Moment Apart', 'Odesza', 'https://open.spotify.com/search/A%20Moment%20Apart%20Odesza'],
+          ['Take Five', 'Dave Brubeck', 'https://open.spotify.com/search/Take%20Five%20Dave%20Brubeck'],
+          ['Gymnopedie No. 1', 'Erik Satie', 'https://open.spotify.com/search/Gymnopedie%20No.%201%20Erik%20Satie'],
+          ['Teardrop', 'Massive Attack', 'https://open.spotify.com/search/Teardrop%20Massive%20Attack'],
+          ['Porcelain', 'Moby', 'https://open.spotify.com/search/Porcelain%20Moby']
+        ],
+        connection: [
+          ['Lean on Me', 'Bill Withers', 'https://open.spotify.com/search/Lean%20on%20Me%20Bill%20Withers'],
+          ['Count on Me', 'Bruno Mars', 'https://open.spotify.com/search/Count%20on%20Me%20Bruno%20Mars'],
+          ["You've Got a Friend", 'Carole King', 'https://open.spotify.com/search/You%27ve%20Got%20a%20Friend%20Carole%20King'],
+          ['We Are Family', 'Sister Sledge', 'https://open.spotify.com/search/We%20Are%20Family%20Sister%20Sledge'],
+          ['Home', 'Edward Sharpe and the Magnetic Zeros', 'https://open.spotify.com/search/Home%20Edward%20Sharpe'],
+          ['Dog Days Are Over', 'Florence and the Machine', 'https://open.spotify.com/search/Dog%20Days%20Are%20Over%20Florence'],
+          ['Youve Got the Love', 'Florence and the Machine', 'https://open.spotify.com/search/Youve%20Got%20the%20Love%20Florence'],
+          ['What a Wonderful World', 'Louis Armstrong', 'https://open.spotify.com/search/What%20a%20Wonderful%20World%20Louis%20Armstrong'],
+          ['Home', 'Phillip Phillips', 'https://open.spotify.com/search/Home%20Phillip%20Phillips'],
+          ['Stand by Me', 'Ben E. King', 'https://open.spotify.com/search/Stand%20by%20Me%20Ben%20E.%20King']
+        ]
+      };
+
+      function renderDailyBrowseLists() {
+        const dayNumber = Math.floor(Date.now() / 86400000);
+        Object.entries(dailyTracks).forEach(([mood, tracks]) => {
+          const grid = document.querySelector('#' + mood + ' .spotify-grid');
+          if (!grid) return;
+
+          const visibleCount = 4;
+          grid.innerHTML = '';
+          for (let offset = 0; offset < visibleCount; offset += 1) {
+            const track = tracks[(dayNumber * visibleCount + offset) % tracks.length];
+            const coverSrc = resolveLocalCover(track[0]);
+            const card = buildMusicCard(track[0], track[1], track[2], coverSrc);
+            grid.appendChild(card);
+          }
+        });
+      }
+
+      const moodSelect = document.getElementById('mood-select');
+      const result = document.getElementById('daily-result');
+
+      function showDailySuggestion() {
+        const mood = moodSelect.value;
+        const choices = dailyTracks[mood];
+        const dayNumber = Math.floor(Date.now() / 86400000);
+        const track = choices[dayNumber % choices.length];
+        const spotifyUrl = toSpotifyUrl(track[0] + ' ' + track[1]);
+        result.innerHTML = '<img src="' + resolveLocalCover(track[0]) + '" alt="' + escapeHtml(track[0]) + ' cover art"><strong>' + escapeHtml(track[0]) + '</strong>' + escapeHtml(track[1]) + '<br><a href="' + spotifyUrl + '" target="_blank" rel="noopener">Listen on Spotify</a>';
+      }
+
+      renderDailyBrowseLists();
+      showDailySuggestion();
+      moodSelect.addEventListener('change', showDailySuggestion);
+      showDailySuggestion();
+    </script>
+  </body>
+</html>

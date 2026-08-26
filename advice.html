@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advice Corner | Mental Health Corner</title>
+    <style>
+      :root {
+        --bg: #F2E6D0;
+        --bg-dark: #E8D8BE;
+        --cream: #F2E6D0;
+        --sand: #D9B98F;
+        --terra: #C97C5D;
+        --brown: #8F6B4A;
+        --dark: #2E2A27;
+        --white: #fffaf4;
+        --muted: rgba(46,42,39,0.72);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: linear-gradient(135deg, var(--bg), #EDE0C8);
+        color: var(--dark);
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+      }
+      a { text-decoration: none; }
+      h1, h2, h3 { font-family: 'Algerian', 'Georgia', serif; }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(46,42,39,0.92);
+        border-bottom: 1px solid rgba(201,124,93,0.2);
+      }
+      .container { width: min(100%, 72rem); margin: 0 auto; padding: 0 1.5rem; }
+      .topbar-inner {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 700;
+        color: var(--cream);
+      }
+      .brand-mark {
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--terra), var(--sand));
+        color: var(--white);
+      }
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .nav a { color: var(--cream); }
+      .nav a:hover { color: var(--white); }
+      .page {
+        min-height: calc(100vh - 140px);
+        padding: 4rem 0 5rem;
+      }
+      .card {
+        background: rgba(255,255,255,0.72);
+        border: 1px solid rgba(143,107,74,0.18);
+        border-radius: 1.5rem;
+        box-shadow: 0 12px 30px rgba(143,107,74,0.08);
+        padding: 2rem;
+      }
+      .eyebrow {
+        margin: 0 0 1rem;
+        color: var(--terra);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.2rem;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0 0 1rem;
+        font-size: clamp(2.2rem, 5vw, 3.5rem);
+        color: var(--dark);
+      }
+      p {
+        margin: 0 0 1rem;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+      .advice-tool { margin-top: 2rem; padding: 1.5rem; border-radius: 1.25rem; background: rgba(46,42,39,0.96); color: var(--white); }
+      .advice-tool h2 { margin: 0 0 0.45rem; color: var(--white); }
+      .tool-intro { color: rgba(242,230,208,0.78); }
+      .need-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.6rem; margin: 1.2rem 0; }
+      .need-button, .new-advice { border: 1px solid rgba(242,230,208,0.35); border-radius: 0.75rem; padding: 0.75rem 0.5rem; background: transparent; color: var(--cream); font: inherit; font-weight: 700; cursor: pointer; }
+      .need-button.active, .need-button:hover, .new-advice:hover { background: var(--terra); color: var(--white); }
+      .advice-result { padding: 1.25rem; border-radius: 0.9rem; background: #fffaf4; color: var(--dark); }
+      .advice-result h3 { margin: 0 0 0.55rem; color: var(--terra); }
+      .advice-result p { margin-bottom: 0.6rem; }
+      .advice-steps { margin: 0.7rem 0 0; padding-left: 1.2rem; line-height: 1.8; }
+      .new-advice { margin-top: 1rem; }
+      @media (max-width: 760px) { .topbar-inner { justify-content: center; } .need-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin: 1.5rem 0 0;
+      }
+      .tags span {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(201,124,93,0.12);
+        color: var(--brown);
+        font-size: 0.76rem;
+        font-weight: 700;
+      }
+      .button {
+        display: inline-flex;
+        padding: 0.9rem 1.5rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--terra), var(--brown));
+        color: var(--white);
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+      }
+      footer {
+        padding: 2rem 1.5rem;
+        background: var(--dark);
+        border-top: 1px solid rgba(217,185,143,0.15);
+        text-align: center;
+        color: rgba(242,230,208,0.7);
+      }
+      @media (max-width: 760px) {
+        .topbar-inner { justify-content: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div class="brand">
+          <span class="brand-mark">✦</span>
+          <span>New Dawn Foundation Uganda</span>
+        </div>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="home.html">Home</a>
+          <a href="about us.html">About Us</a>
+          <a href="mental health corner.html">Mental Health Corner</a>
+          <a href="events.html">Events</a>
+          <a href="support us.html">Support Us</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <div class="container">
+        <a class="button" href="mental health corner.html">← Back to Mental Health Corner</a>
+        <div class="card">
+          <p class="eyebrow">Advice Corner</p>
+          <h1>Gentle guidance for hard moments.</h1>
+          <p>Life can become noisy, tense, and exhausting. This space offers small, practical ideas that help steady the mind without trying to fix everything at once.</p>
+          <p><strong>Try these steps:</strong> pause for one minute, breathe out longer than you breathe in, name one thing you can control today, and choose one task that feels manageable. These simple actions can reduce the sense of overwhelm.</p>
+          <p>Advice works best when it is kind. You are not failing because your mind feels heavy. You are human, and slowing down is sometimes the strongest choice.</p>
+          <div class="tags">
+            <span>Grounding guidance</span>
+            <span>Simple coping steps</span>
+            <span>Gentle encouragement</span>
+          </div>
+          <section class="advice-tool" aria-labelledby="advice-heading">
+            <h2 id="advice-heading">Find one next step</h2>
+            <p class="tool-intro">Choose what feels closest to your experience. You only need to try one small thing.</p>
+            <div class="need-grid" role="group" aria-label="Choose what you need">
+              <button class="need-button active" type="button" data-need="overwhelmed">Overwhelmed</button>
+              <button class="need-button" type="button" data-need="anxious">Anxious</button>
+              <button class="need-button" type="button" data-need="lonely">Lonely</button>
+              <button class="need-button" type="button" data-need="angry">Angry</button>
+              <button class="need-button" type="button" data-need="tired">Tired</button>
+            </div>
+            <div class="advice-result" id="advice-result" aria-live="polite"></div>
+            <button class="new-advice" id="new-advice" type="button">Give me another small step</button>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      &copy; 2026 New Dawn Foundation Uganda
+    </footer>
+    <script>
+      const advice = {
+        overwhelmed: { title: 'Make the moment smaller', intro: 'You do not have to solve the whole day. Reduce the next ten minutes to one kind action.', steps: ['Put both feet on the floor.', 'Name the one thing that needs attention first.', 'Do only two minutes of that task, then pause.'] },
+        anxious: { title: 'Come back to the room', intro: 'An anxious mind often lives ahead of you. Let your senses bring you back to now.', steps: ['Name five things you can see.', 'Breathe out slowly for six counts.', 'Touch something textured and describe it silently.'] },
+        lonely: { title: 'Create one thread of connection', intro: 'You deserve support, even if asking feels difficult. Choose the smallest reachable connection.', steps: ['Think of one person who feels safe enough.', 'Send a simple message: “I could use a little company today.”', 'If they are unavailable, sit somewhere shared or call a local support service.'] },
+        angry: { title: 'Give the anger somewhere safe to go', intro: 'Anger carries information and energy. Let it move without letting it harm you or anyone else.', steps: ['Step away from the conversation if possible.', 'Write the uncensored version privately.', 'Return only when your body feels less ready to react.'] },
+        tired: { title: 'Lower the demand', intro: 'Rest is not something you have to earn. Choose the gentlest version of what needs doing.', steps: ['Drink some water or eat something simple.', 'Remove one non-essential task from today.', 'Rest for ten minutes without needing to be productive.'] }
+      };
+      let selectedNeed = 'overwhelmed';
+      let suggestionIndex = 0;
+      const result = document.getElementById('advice-result');
+      function renderAdvice() { const item = advice[selectedNeed]; const step = item.steps[suggestionIndex % item.steps.length]; result.innerHTML = `<h3>${item.title}</h3><p>${item.intro}</p><ol class="advice-steps"><li>${step}</li><li>${item.steps[(suggestionIndex + 1) % item.steps.length]}</li><li>${item.steps[(suggestionIndex + 2) % item.steps.length]}</li></ol>`; }
+      document.querySelectorAll('.need-button').forEach((button) => button.addEventListener('click', () => { selectedNeed = button.dataset.need; suggestionIndex = 0; document.querySelectorAll('.need-button').forEach((item) => item.classList.toggle('active', item === button)); renderAdvice(); }));
+      document.getElementById('new-advice').addEventListener('click', () => { suggestionIndex += 1; renderAdvice(); });
+      renderAdvice();
+    </script>
+  </body>
+</html>

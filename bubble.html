@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crash Out Bubble | Mental Health Corner</title>
+    <style>
+      :root {
+        --bg: #F2E6D0;
+        --bg-dark: #E8D8BE;
+        --cream: #F2E6D0;
+        --sand: #D9B98F;
+        --terra: #C97C5D;
+        --brown: #8F6B4A;
+        --dark: #2E2A27;
+        --white: #fffaf4;
+        --muted: rgba(46,42,39,0.72);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: linear-gradient(135deg, var(--bg), #EDE0C8);
+        color: var(--dark);
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+      }
+      a { text-decoration: none; }
+      h1, h2, h3 { font-family: 'Algerian', 'Georgia', serif; }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(46,42,39,0.92);
+        border-bottom: 1px solid rgba(201,124,93,0.2);
+      }
+      .container { width: min(100%, 72rem); margin: 0 auto; padding: 0 1.5rem; }
+      .topbar-inner {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 700;
+        color: var(--cream);
+      }
+      .brand-mark {
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--terra), var(--sand));
+        color: var(--white);
+      }
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .nav a { color: var(--cream); }
+      .nav a:hover { color: var(--white); }
+      .page {
+        min-height: calc(100vh - 140px);
+        padding: 4rem 0 5rem;
+      }
+      .card {
+        background: rgba(255,255,255,0.72);
+        border: 1px solid rgba(143,107,74,0.18);
+        border-radius: 1.5rem;
+        box-shadow: 0 12px 30px rgba(143,107,74,0.08);
+        padding: 2rem;
+      }
+      .eyebrow {
+        margin: 0 0 1rem;
+        color: var(--terra);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.2rem;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0 0 1rem;
+        font-size: clamp(2.2rem, 5vw, 3.5rem);
+        color: var(--dark);
+      }
+      p {
+        margin: 0 0 1rem;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+      .bubble-panel {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        border-radius: 1.25rem;
+        background: rgba(46,42,39,0.96);
+        color: var(--white);
+      }
+      .bubble-panel h2 { margin: 0 0 0.4rem; color: var(--white); }
+      .bubble-intro { color: rgba(242,230,208,0.78); }
+      .bubble-status {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        color: var(--cream);
+        font-weight: 700;
+      }
+      .bubble-field {
+        position: relative;
+        min-height: 25rem;
+        overflow: hidden;
+        border-radius: 1rem;
+        background: radial-gradient(circle at 20% 20%, rgba(217,185,143,0.24), transparent 35%), #4a3830;
+      }
+      .bubble {
+        position: absolute;
+        top: 100%;
+        width: var(--size);
+        height: var(--size);
+        border: 1px solid rgba(255,250,244,0.75);
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.8), rgba(201,124,93,0.75) 28%, rgba(143,107,74,0.9));
+        box-shadow: inset -8px -10px 16px rgba(46,42,39,0.18), 0 5px 12px rgba(0,0,0,0.16);
+        cursor: pointer;
+        animation: rise var(--duration) linear var(--delay) infinite;
+      }
+      .bubble:focus-visible { outline: 3px solid var(--cream); outline-offset: 3px; }
+      .bubble.popped { animation: pop 0.2s ease-out forwards; pointer-events: none; }
+      .reset-button {
+        margin-top: 1rem;
+        border: 1px solid rgba(242,230,208,0.35);
+        border-radius: 999px;
+        padding: 0.75rem 1.1rem;
+        background: transparent;
+        color: var(--cream);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .completion { min-height: 1.6rem; margin: 1rem 0 0; color: var(--cream); font-weight: 700; }
+      @keyframes rise {
+        0% { transform: translate3d(0, 10vh, 0) scale(0.7); opacity: 0; }
+        10% { opacity: 1; }
+        42% { transform: translate3d(var(--drift), -35vh, 0) scale(1); }
+        82% { opacity: 1; }
+        94% { transform: translate3d(calc(var(--drift) * -0.65), -92vh, 0) scale(1.05); opacity: 1; }
+        100% { transform: translate3d(calc(var(--drift) * -0.8), -105vh, 0) scale(1.55); opacity: 0; }
+      }
+      @keyframes pop {
+        0% { transform: scale(1); opacity: 1; }
+        65% { transform: scale(1.35); opacity: 0.9; }
+        100% { transform: scale(1.8); opacity: 0; }
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin: 1.5rem 0 0;
+      }
+      .tags span {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(201,124,93,0.12);
+        color: var(--brown);
+        font-size: 0.76rem;
+        font-weight: 700;
+      }
+      .button {
+        display: inline-flex;
+        padding: 0.9rem 1.5rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--terra), var(--brown));
+        color: var(--white);
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+      }
+      footer {
+        padding: 2rem 1.5rem;
+        background: var(--dark);
+        border-top: 1px solid rgba(217,185,143,0.15);
+        text-align: center;
+        color: rgba(242,230,208,0.7);
+      }
+      @media (max-width: 760px) {
+        .topbar-inner { justify-content: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div class="brand">
+          <span class="brand-mark">✦</span>
+          <span>New Dawn Foundation Uganda</span>
+        </div>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="home.html">Home</a>
+          <a href="about us.html">About Us</a>
+          <a href="mental health corner.html">Mental Health Corner</a>
+          <a href="events.html">Events</a>
+          <a href="support us.html">Support Us</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <div class="container">
+        <a class="button" href="mental health corner.html">← Back to Mental Health Corner</a>
+        <div class="card">
+          <p class="eyebrow">Crash Out Bubble</p>
+          <h1>Pop the pressure, one bubble at a time.</h1>
+          <p>Sometimes what you need is not a perfect solution but a visible release. This space is designed to help you let go of tension in small, manageable bursts instead of carrying everything at once.</p>
+          <p><strong>Try this:</strong> imagine each pop as releasing a tiny weight — a worry, a frustration, an unfinished thought, or a moment you have been forcing yourself to be okay in. The point is not to erase the issue, but to loosen its grip.</p>
+          <p>When stress builds up, repeated small releases can feel more healing than one big emotional reset. Give yourself permission to deflate gently.</p>
+          <div class="tags">
+            <span>Stress release</span>
+            <span>Mindful decompression</span>
+            <span>One pop at a time</span>
+          </div>
+
+          <section class="bubble-panel" aria-labelledby="bubble-heading">
+            <h2 id="bubble-heading">Release what is taking up space</h2>
+            <p class="bubble-intro">Pop the bubbles at your own pace. You can use the activity silently, or name one small pressure in your mind with each pop.</p>
+            <div class="bubble-status"><span id="bubble-count">0 of 24 popped</span><span>Take one slow breath.</span></div>
+            <div class="bubble-field" id="bubble-field" aria-label="Interactive bubble popping area"></div>
+            <p class="completion" id="completion" aria-live="polite"></p>
+            <button class="reset-button" id="reset-bubbles" type="button">Reset the bubbles</button>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      &copy; 2026 New Dawn Foundation Uganda
+    </footer>
+
+    <script>
+      const bubbleField = document.getElementById('bubble-field');
+      const bubbleCount = document.getElementById('bubble-count');
+      const completion = document.getElementById('completion');
+      const resetButton = document.getElementById('reset-bubbles');
+      const totalBubbles = 24;
+      let poppedBubbles = 0;
+
+      function createBubbles() {
+        bubbleField.replaceChildren();
+        poppedBubbles = 0;
+        bubbleCount.textContent = `0 of ${totalBubbles} popped`;
+        completion.textContent = '';
+
+        for (let index = 0; index < totalBubbles; index += 1) {
+          const bubble = document.createElement('button');
+          const size = 38 + Math.floor(Math.random() * 34);
+          bubble.className = 'bubble';
+          bubble.type = 'button';
+          bubble.setAttribute('aria-label', `Pop bubble ${index + 1}`);
+          bubble.style.setProperty('--size', `${size}px`);
+          bubble.style.left = `${3 + Math.random() * 91}%`;
+          bubble.style.setProperty('--drift', `${-55 + Math.random() * 110}px`);
+          bubble.style.setProperty('--duration', `${7 + Math.random() * 6}s`);
+          bubble.style.setProperty('--delay', `${Math.random() * -6}s`);
+          bubble.addEventListener('click', () => {
+            if (bubble.classList.contains('popped')) return;
+            bubble.classList.add('popped');
+            poppedBubbles += 1;
+            bubbleCount.textContent = `${poppedBubbles} of ${totalBubbles} popped`;
+            if (poppedBubbles === totalBubbles) {
+              completion.textContent = 'You made room to breathe. Notice how your body feels now.';
+            }
+          });
+          bubbleField.appendChild(bubble);
+        }
+      }
+
+      resetButton.addEventListener('click', createBubbles);
+      createBubbles();
+    </script>
+  </body>
+</html>

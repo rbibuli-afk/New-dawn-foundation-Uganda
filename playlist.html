@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Curate Your Feelings Playlist | Mental Health Corner</title>
+    <style>
+      :root {
+        --bg: #F2E6D0;
+        --bg-dark: #E8D8BE;
+        --cream: #F2E6D0;
+        --sand: #D9B98F;
+        --terra: #C97C5D;
+        --brown: #8F6B4A;
+        --dark: #2E2A27;
+        --white: #fffaf4;
+        --muted: rgba(46,42,39,0.72);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: linear-gradient(135deg, var(--bg), #EDE0C8);
+        color: var(--dark);
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+      }
+      a { text-decoration: none; }
+      h1, h2, h3 { font-family: 'Algerian', 'Georgia', serif; }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(46,42,39,0.92);
+        border-bottom: 1px solid rgba(201,124,93,0.2);
+      }
+      .container { width: min(100%, 72rem); margin: 0 auto; padding: 0 1.5rem; }
+      .topbar-inner {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 700;
+        color: var(--cream);
+      }
+      .brand-mark {
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--terra), var(--sand));
+        color: var(--white);
+      }
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .nav a { color: var(--cream); }
+      .nav a:hover { color: var(--white); }
+      .page {
+        min-height: calc(100vh - 140px);
+        padding: 4rem 0 5rem;
+      }
+      .card {
+        background: rgba(255,255,255,0.72);
+        border: 1px solid rgba(143,107,74,0.18);
+        border-radius: 1.5rem;
+        box-shadow: 0 12px 30px rgba(143,107,74,0.08);
+        padding: 2rem;
+      }
+      .eyebrow {
+        margin: 0 0 1rem;
+        color: var(--terra);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.2rem;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0 0 1rem;
+        font-size: clamp(2.2rem, 5vw, 3.5rem);
+        color: var(--dark);
+      }
+      p {
+        margin: 0 0 1rem;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+      .curator { margin-top: 2rem; padding: 1.5rem; border-radius: 1.25rem; background: rgba(46,42,39,0.96); color: var(--white); }
+      .curator h2 { margin: 0 0 0.45rem; color: var(--white); }
+      .tool-intro { color: rgba(242,230,208,0.78); }
+      .mood-tabs { display: flex; gap: 0.55rem; flex-wrap: wrap; margin: 1.2rem 0; }
+      .mood-tab, .playlist-action { border: 1px solid rgba(242,230,208,0.35); border-radius: 999px; padding: 0.65rem 0.9rem; background: transparent; color: var(--cream); font: inherit; font-weight: 700; cursor: pointer; }
+      .mood-tab.active, .mood-tab:hover, .playlist-action:hover { background: var(--terra); color: var(--white); }
+      .playlist-assistant {
+        margin: 1.2rem 0 1rem;
+        padding: 1rem;
+        border-radius: 1rem;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(242,230,208,0.18);
+      }
+      .assistant-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        align-items: center;
+        margin-top: 0.8rem;
+      }
+      .assistant-row select,
+      .assistant-row button {
+        border-radius: 999px;
+        border: 1px solid rgba(242,230,208,0.35);
+        padding: 0.7rem 0.9rem;
+        font: inherit;
+      }
+      .assistant-row select {
+        background: rgba(255,255,255,0.06);
+        color: var(--white);
+      }
+      .assistant-row button {
+        background: linear-gradient(135deg, var(--terra), var(--brown));
+        color: var(--white);
+        cursor: pointer;
+        font-weight: 700;
+      }
+      .assistant-suggestions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+      .song-suggestions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+      .song-card { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 1rem; border-radius: 0.8rem; background: #fffaf4; color: var(--dark); }
+      .song-cover { width: 52px; height: 52px; object-fit: cover; border-radius: 0.7rem; border: 1px solid rgba(143,107,74,0.12); }
+      .song-info { display: flex; align-items: center; gap: 0.7rem; flex: 1; min-width: 0; }
+      .song-info strong, .song-info span { display: block; }
+      .song-info span { margin-top: 0.25rem; color: var(--brown); font-size: 0.82rem; }
+      .add-song { border: 0; border-radius: 999px; padding: 0.6rem 0.8rem; background: var(--terra); color: var(--white); font: inherit; font-weight: 700; cursor: pointer; white-space: nowrap; }
+      .my-playlist { margin-top: 1.5rem; padding-top: 1.3rem; border-top: 1px solid rgba(242,230,208,0.2); }
+      .my-playlist h3 { margin: 0 0 0.8rem; color: var(--white); }
+      .playlist-list { display: grid; gap: 0.55rem; }
+      .playlist-item { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.75rem 0.9rem; border-radius: 0.7rem; background: rgba(255,250,244,0.1); }
+      .playlist-item small { color: rgba(242,230,208,0.72); }
+      .remove-song { border: 0; background: transparent; color: #f3b6a2; cursor: pointer; font: inherit; }
+      .playlist-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.9rem; }
+      .playlist-message { min-height: 1.3rem; margin: 0.7rem 0 0; color: var(--cream); font-size: 0.85rem; font-weight: 700; }
+      .playlist-progress { margin: 0.4rem 0 0.8rem; color: rgba(242,230,208,0.72); font-size: 0.85rem; }
+      @media (max-width: 760px) { .topbar-inner { justify-content: center; } .song-suggestions { grid-template-columns: 1fr; } }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin: 1.5rem 0 0;
+      }
+      .tags span {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(201,124,93,0.12);
+        color: var(--brown);
+        font-size: 0.76rem;
+        font-weight: 700;
+      }
+      .button {
+        display: inline-flex;
+        padding: 0.9rem 1.5rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--terra), var(--brown));
+        color: var(--white);
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+      }
+      footer {
+        padding: 2rem 1.5rem;
+        background: var(--dark);
+        border-top: 1px solid rgba(217,185,143,0.15);
+        text-align: center;
+        color: rgba(242,230,208,0.7);
+      }
+      @media (max-width: 760px) {
+        .topbar-inner { justify-content: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div class="brand">
+          <span class="brand-mark">✦</span>
+          <span>New Dawn Foundation Uganda</span>
+        </div>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="home.html">Home</a>
+          <a href="about us.html">About Us</a>
+          <a href="mental health corner.html">Mental Health Corner</a>
+          <a href="events.html">Events</a>
+          <a href="support us.html">Support Us</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <div class="container">
+        <a class="button" href="mental health corner.html">← Back to Mental Health Corner</a>
+        <div class="card">
+          <p class="eyebrow">Curate Your Feelings Playlist</p>
+          <h1>Pick the songs that hold your emotions.</h1>
+          <p>Sometimes the best way to understand what you feel is to build a playlist around it. This space helps you name the emotions you are carrying and match them with songs that gently reflect them.</p>
+          <p><strong>How to use it:</strong> select songs for sadness, hope, calm, anger, joy, or exhaustion. You are not creating a “perfect” mood board — you are creating a compassionate archive of how you are feeling.</p>
+          <p>When a day feels messy, a playlist can become a ritual of self-recognition. It lets your feelings exist without shame and reminds you that all emotions deserve a place.</p>
+          <div class="tags">
+            <span>Emotion check-ins</span>
+            <span>Reflective song choices</span>
+            <span>Self-soothing rituals</span>
+          </div>
+          <section class="curator" aria-labelledby="curator-heading">
+            <h2 id="curator-heading">Build a playlist for this feeling</h2>
+            <p class="tool-intro">Choose a feeling, then add any songs that belong in your personal soundtrack. The suggestions include oldies, Afrobeat, amapiano, indie, jazz, gospel, R&amp;B, and pop.</p>
+            <div class="playlist-assistant">
+              <strong>Playlist AI helper</strong>
+              <div class="assistant-row">
+                <select id="playlist-assistant-genre">
+                  <option value="all">All genres</option>
+                  <option value="afro">Afro</option>
+                  <option value="amapiano">Amapiano</option>
+                  <option value="ugandan">Ugandan</option>
+                  <option value="caribbean">Caribbean</option>
+                  <option value="reggae">Reggae</option>
+                  <option value="gospel">Gospel</option>
+                  <option value="jazz">Jazz</option>
+                  <option value="soul">Soul</option>
+                  <option value="pop">Pop</option>
+                </select>
+                <button id="playlist-assistant-btn" type="button">Recommend songs</button>
+              </div>
+              <div class="assistant-suggestions" id="assistant-suggestions"></div>
+            </div>
+            <div class="mood-tabs" role="group" aria-label="Playlist moods">
+              <button class="mood-tab active" type="button" data-mood="calm">Calm</button>
+              <button class="mood-tab" type="button" data-mood="hope">Hope</button>
+              <button class="mood-tab" type="button" data-mood="release">Release</button>
+              <button class="mood-tab" type="button" data-mood="joy">Joy</button>
+              <button class="mood-tab" type="button" data-mood="focus">Focus</button>
+            </div>
+            <div class="song-suggestions" id="song-suggestions"></div>
+            <div class="my-playlist">
+              <h3>My playlist <span id="playlist-count">(0 songs)</span></h3>
+              <p class="playlist-progress" id="playlist-progress">Add at least 20 songs to save your playlist.</p>
+              <div class="playlist-list" id="playlist-list"><p class="tool-intro">Your chosen songs will appear here.</p></div>
+              <div class="playlist-actions"><button class="playlist-action" id="save-playlist" type="button">Save playlist</button><button class="playlist-action" id="download-playlist" type="button">Download playable list</button><button class="playlist-action" id="clear-playlist" type="button">Clear playlist</button></div>
+              <p class="playlist-message" id="playlist-message" aria-live="polite"></p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      &copy; 2026 New Dawn Foundation Uganda
+    </footer>
+    <script>
+      const catalog = {
+        calm: [
+          ['River', 'Leon Bridges - soul', 'https://open.spotify.com/search/River%20Leon%20Bridges'], ['Bloom', 'The Paper Kites - indie folk', 'https://open.spotify.com/search/Bloom%20The%20Paper%20Kites'], ['Nangilima', 'Ladysmith Black Mambazo - world / choral', 'https://open.spotify.com/search/Nangilima%20Ladysmith%20Black%20Mambazo'], ['Malaika', 'Miriam Makeba - African classic', 'https://open.spotify.com/search/Malaika%20Miriam%20Makeba'], ['Holocene', 'Bon Iver - indie folk', 'https://open.spotify.com/search/Holocene%20Bon%20Iver'], ['The Night We Met', 'Lord Huron - indie', 'https://open.spotify.com/search/The%20Night%20We%20Met%20Lord%20Huron'], ['A Thousand Years', 'Christina Perri - pop', 'https://open.spotify.com/search/A%20Thousand%20Years%20Christina%20Perri'], ['Lovely Day', 'Bill Withers - soul', 'https://open.spotify.com/search/Lovely%20Day%20Bill%20Withers'], ['Kothbiro', 'Ayub Ogada - world', 'https://open.spotify.com/search/Kothbiro%20Ayub%20Ogada'], ['Sailing', 'Christopher Cross - soft rock', 'https://open.spotify.com/search/Sailing%20Christopher%20Cross'], ['Come Away With Me', 'Norah Jones - jazz pop', 'https://open.spotify.com/search/Come%20Away%20With%20Me%20Norah%20Jones'], ['Ordinary World', 'Duran Duran - classic pop', 'https://open.spotify.com/search/Ordinary%20World%20Duran%20Duran'], ['To Build a Home', 'The Cinematic Orchestra - alternative', 'https://open.spotify.com/search/To%20Build%20a%20Home%20Cinematic%20Orchestra'], ['Fields of Gold', 'Sting - oldies', 'https://open.spotify.com/search/Fields%20of%20Gold%20Sting'], ['Three Little Birds', 'Bob Marley - reggae', 'https://open.spotify.com/search/Three%20Little%20Birds%20Bob%20Marley'], ['Nara', 'alt-J - indie', 'https://open.spotify.com/search/Nara%20alt-J'], ['Kiss of Life', 'Sade - R&B', 'https://open.spotify.com/search/Kiss%20of%20Life%20Sade'], ['Ain’t No Sunshine', 'Bill Withers - oldies soul', 'https://open.spotify.com/search/Aint%20No%20Sunshine%20Bill%20Withers'], ['Weightless', 'Marconi Union - ambient', 'https://open.spotify.com/search/Weightless%20Marconi%20Union'], ['Mojabi Ghost', 'Tainy & Bad Bunny - Latin', 'https://open.spotify.com/search/Mojabi%20Ghost%20Tainy%20Bad%20Bunny']
+        ],
+        hope: [
+          ['Bridge Over Troubled Water', 'Simon & Garfunkel - folk oldies', 'https://open.spotify.com/search/Bridge%20Over%20Troubled%20Water%20Simon%20GarFunkel'], ['Rise Up', 'Andra Day - soul', 'https://open.spotify.com/search/Rise%20Up%20Andra%20Day'], ['Brave', 'Sara Bareilles - pop', 'https://open.spotify.com/search/Brave%20Sara%20Bareilles'], ['Ain’t No Mountain High Enough', 'Marvin Gaye & Tammi Terrell - oldies', 'https://open.spotify.com/search/Aint%20No%20Mountain%20High%20Enough%20Marvin%20Gaye'], ['What a Wonderful World', 'Louis Armstrong - jazz oldies', 'https://open.spotify.com/search/What%20a%20Wonderful%20World%20Louis%20Armstrong'], ['Man in the Mirror', 'Michael Jackson - pop soul', 'https://open.spotify.com/search/Man%20in%20the%20Mirror%20Michael%20Jackson'], ['Keep Your Head Up', 'Ben Howard - indie folk', 'https://open.spotify.com/search/Keep%20Your%20Head%20Up%20Ben%20Howard'], ['Unstoppable', 'Sia - pop', 'https://open.spotify.com/search/Unstoppable%20Sia'], ['Hall of Fame', 'The Script - pop rock', 'https://open.spotify.com/search/Hall%20of%20Fame%20The%20Script'], ['I Can See Clearly Now', 'Johnny Nash - reggae pop', 'https://open.spotify.com/search/I%20Can%20See%20Clearly%20Now%20Johnny%20Nash'], ['Lovely', 'Billie Eilish & Khalid - alternative pop', 'https://open.spotify.com/search/Lovely%20Billie%20Eilish%20Khalid'], ['Try Everything', 'Shakira - pop', 'https://open.spotify.com/search/Try%20Everything%20Shakira'], ['You’ve Got the Love', 'Florence + The Machine - indie', 'https://open.spotify.com/search/Youve%20Got%20the%20Love%20Florence%20Machine'], ['What Is Love', 'Haddaway - dance', 'https://open.spotify.com/search/What%20Is%20Love%20Haddaway'], ['Three Little Birds', 'Bob Marley - reggae', 'https://open.spotify.com/search/Three%20Little%20Birds%20Bob%20Marley'], ['Lean on Me', 'Club Nouveau - soul pop', 'https://open.spotify.com/search/Lean%20on%20Me%20Club%20Nouveau'], ['I Lived', 'OneRepublic - pop rock', 'https://open.spotify.com/search/I%20Lived%20OneRepublic'], ['Good as Hell', 'Lizzo - pop soul', 'https://open.spotify.com/search/Good%20as%20Hell%20Lizzo'], ['Baba Yetu', 'Christopher Tin - world choral', 'https://open.spotify.com/search/Baba%20Yetu%20Christopher%20Tin'], ['High Hopes', 'Panic! At The Disco - pop rock', 'https://open.spotify.com/search/High%20Hopes%20Panic%20At%20The%20Disco']
+        ],
+        release: [
+          ['Unwritten', 'Natasha Bedingfield - pop', 'https://open.spotify.com/search/Unwritten%20Natasha%20Bedingfield'], ['Dog Days Are Over', 'Florence + The Machine - indie rock', 'https://open.spotify.com/search/Dog%20Days%20Are%20Over%20Florence%20The%20Machine'], ['Soweto', 'Victony & Tempoe - Afrobeat', 'https://open.spotify.com/search/Soweto%20Victony%20Tempoe'], ['Titanium', 'David Guetta feat. Sia - dance', 'https://open.spotify.com/search/Titanium%20David%20Guetta%20Sia'], ['Stronger', 'Kanye West - hip-hop', 'https://open.spotify.com/search/Stronger%20Kanye%20West'], ['Survivor', 'Destiny’s Child - R&B', 'https://open.spotify.com/search/Survivor%20Destinys%20Child'], ['Since U Been Gone', 'Kelly Clarkson - pop rock', 'https://open.spotify.com/search/Since%20U%20Been%20Gone%20Kelly%20Clarkson'], ['Freedom! ’90', 'George Michael - pop soul', 'https://open.spotify.com/search/Freedom%2090%20George%20Michael'], ['Shake It Out', 'Florence + The Machine - indie', 'https://open.spotify.com/search/Shake%20It%20Out%20Florence%20Machine'], ['No Scrubs', 'TLC - R&B', 'https://open.spotify.com/search/No%20Scrubs%20TLC'], ['Truth Hurts', 'Lizzo - pop soul', 'https://open.spotify.com/search/Truth%20Hurts%20Lizzo'], ['Gbogbo Bigi', 'Pheelz - Afrobeat', 'https://open.spotify.com/search/Gbogbo%20Bigi%20Pheelz'], ['Soweto Blues', 'Miriam Makeba - African soul', 'https://open.spotify.com/search/Soweto%20Blues%20Miriam%20Makeba'], ['I Will Survive', 'Gloria Gaynor - disco oldies', 'https://open.spotify.com/search/I%20Will%20Survive%20Gloria%20Gaynor'], ['Lose Yourself', 'Eminem - hip-hop', 'https://open.spotify.com/search/Lose%20Yourself%20Eminem'], ['Run the World', 'Beyoncé - pop R&B', 'https://open.spotify.com/search/Run%20the%20World%20Beyonce'], ['Don’t Stop Me Now', 'Queen - rock oldies', 'https://open.spotify.com/search/Dont%20Stop%20Me%20Now%20Queen'], ['Alive', 'Sia - pop', 'https://open.spotify.com/search/Alive%20Sia'], ['The Man', 'Aloe Blacc - soul', 'https://open.spotify.com/search/The%20Man%20Aloe%20Blacc'], ['Break My Soul', 'Beyoncé - dance pop', 'https://open.spotify.com/search/Break%20My%20Soul%20Beyonce']
+        ],
+        joy: [
+          ['Love Nwantiti', 'CKay - Afrobeat', 'https://open.spotify.com/search/Love%20Nwantiti%20CKay'], ['Mnike', 'Tyler ICU, Tumelo_za, DJ Maphorisa - amapiano', 'https://open.spotify.com/search/Mnike%20Tyler%20ICU'], ['September Song', 'JP Cooper - pop', 'https://open.spotify.com/search/September%20Song%20JP%20Cooper'], ['Signed, Sealed, Delivered', 'Stevie Wonder - Motown oldies', 'https://open.spotify.com/search/Signed%20Sealed%20Delivered%20Stevie%20Wonder'], ['Dancing Queen', 'ABBA - disco oldies', 'https://open.spotify.com/search/Dancing%20Queen%20ABBA'], ['Johnny B. Goode', 'Chuck Berry - rock oldies', 'https://open.spotify.com/search/Johnny%20B%20Goode%20Chuck%20Berry'], ['Good Times', 'Chic - disco', 'https://open.spotify.com/search/Good%20Times%20Chic'], ['Crazy in Love', 'Beyoncé - R&B pop', 'https://open.spotify.com/search/Crazy%20in%20Love%20Beyonce'], ['Calm Down', 'Rema & Selena Gomez - Afro-pop', 'https://open.spotify.com/search/Calm%20Down%20Rema%20Selena%20Gomez'], ['Ye', 'Burna Boy - Afrobeat', 'https://open.spotify.com/search/Ye%20Burna%20Boy'], ['Love Me Again', 'John Newman - soul pop', 'https://open.spotify.com/search/Love%20Me%20Again%20John%20Newman'], ['Doo Wop', 'Lauryn Hill - R&B', 'https://open.spotify.com/search/Doo%20Wop%20Lauryn%20Hill'], ['Mambo No. 5', 'Lou Bega - Latin pop', 'https://open.spotify.com/search/Mambo%20No%205%20Lou%20Bega'], ['Kuku', 'Khaligraph Jones - Kenyan hip-hop', 'https://open.spotify.com/search/Kuku%20Khaligraph%20Jones'], ['I Gotta Feeling', 'The Black Eyed Peas - pop dance', 'https://open.spotify.com/search/I%20Gotta%20Feeling%20Black%20Eyed%20Peas'], ['Best Day of My Life', 'American Authors - indie pop', 'https://open.spotify.com/search/Best%20Day%20of%20My%20Life%20American%20Authors'], ['Jamming', 'Bob Marley - reggae', 'https://open.spotify.com/search/Jamming%20Bob%20Marley'], ['Dynamite', 'BTS - K-pop', 'https://open.spotify.com/search/Dynamite%20BTS'], ['Waka Waka', 'Shakira - Afro-pop', 'https://open.spotify.com/search/Waka%20Waka%20Shakira'], ['Happy', 'Pharrell Williams - pop soul', 'https://open.spotify.com/search/Happy%20Pharrell%20Williams']
+        ],
+        focus: [
+          ['A Forest', 'The Cure - alternative', 'https://open.spotify.com/search/A%20Forest%20The%20Cure'], ['Tadow', 'Masego & FKJ - jazz / R&B', 'https://open.spotify.com/search/Tadow%20Masego%20FKJ'], ['Baba Yetu', 'Christopher Tin - world / choral', 'https://open.spotify.com/search/Baba%20Yetu%20Christopher%20Tin'], ['The Sound of Silence', 'Simon & Garfunkel - folk oldies', 'https://open.spotify.com/search/The%20Sound%20of%20Silence%20Simon%20GarFunkel'], ['Virtual Insanity', 'Jamiroquai - funk', 'https://open.spotify.com/search/Virtual%20Insanity%20Jamiroquai'], ['Lovely Day', 'Bill Withers - soul', 'https://open.spotify.com/search/Lovely%20Day%20Bill%20Withers'], ['Electric Relaxation', 'A Tribe Called Quest - hip-hop', 'https://open.spotify.com/search/Electric%20Relaxation%20A%20Tribe%20Called%20Quest'], ['Time Moves Slow', 'BADBADNOTGOOD - jazz', 'https://open.spotify.com/search/Time%20Moves%20Slow%20BADBADNOTGOOD'], ['Roads', 'Portishead - trip-hop', 'https://open.spotify.com/search/Roads%20Portishead'], ['The Less I Know the Better', 'Tame Impala - indie', 'https://open.spotify.com/search/The%20Less%20I%20Know%20the%20Better%20Tame%20Impala'], ['Cantaloupe Island', 'Herbie Hancock - jazz', 'https://open.spotify.com/search/Cantaloupe%20Island%20Herbie%20Hancock'], ['No Ordinary Love', 'Sade - R&B', 'https://open.spotify.com/search/No%20Ordinary%20Love%20Sade'], ['The Chain', 'Fleetwood Mac - rock oldies', 'https://open.spotify.com/search/The%20Chain%20Fleetwood%20Mac'], ['Divenire', 'Ludovico Einaudi - classical', 'https://open.spotify.com/search/Divenire%20Ludovico%20Einaudi'], ['Sinnerman', 'Nina Simone - soul jazz', 'https://open.spotify.com/search/Sinnerman%20Nina%20Simone'], ['Ain’t No Sunshine', 'Bill Withers - oldies soul', 'https://open.spotify.com/search/Aint%20No%20Sunshine%20Bill%20Withers'], ['Breezeblocks', 'alt-J - indie', 'https://open.spotify.com/search/Breezeblocks%20alt-J'], ['African Queen', '2Baba - Afro-pop', 'https://open.spotify.com/search/African%20Queen%202Baba'], ['Piano Man', 'Billy Joel - oldies', 'https://open.spotify.com/search/Piano%20Man%20Billy%20Joel'], ['Midnight City', 'M83 - electronic indie', 'https://open.spotify.com/search/Midnight%20City%20M83']
+        ]
+      };
+      let selectedMood = 'calm';
+      let playlist = JSON.parse(localStorage.getItem('newDawnCuratedPlaylist') || '[]');
+      const suggestions = document.getElementById('song-suggestions');
+      const list = document.getElementById('playlist-list');
+      const count = document.getElementById('playlist-count');
+      const progress = document.getElementById('playlist-progress');
+      const message = document.getElementById('playlist-message');
+      const assistantSuggestions = document.getElementById('assistant-suggestions');
+
+      function addSongToPlaylist(song) {
+        if (!playlist.some((item) => item[0] === song[0])) {
+          playlist.push(song);
+          renderPlaylist();
+          message.textContent = `${song[0]} was added to your playlist.`;
+        } else {
+          message.textContent = 'That song is already in your playlist.';
+        }
+      }
+
+      function resolveReuseCover(title) {
+        const titleKey = (title || '').trim();
+        const map = {
+          'River': 'assets/music-covers/river.jpg',
+          'Bloom': 'assets/music-covers/bloom.jpg',
+          'Nangilima': 'assets/music-covers/suzanna.jpg',
+          'Malaika': 'assets/music-covers/suzanna.jpg',
+          'Holocene': 'assets/music-covers/holocene.jpg',
+          'The Night We Met': 'assets/music-covers/the-night-we-met.jpg',
+          'A Thousand Years': 'assets/music-covers/default-cover.jpg',
+          'Lovely Day': 'assets/music-covers/lovely-day.jpg',
+          'Kothbiro': 'assets/music-covers/default-cover.jpg',
+          'Sailing': 'assets/music-covers/default-cover.jpg',
+          'Come Away With Me': 'assets/music-covers/default-cover.jpg',
+          'Ordinary World': 'assets/music-covers/default-cover.jpg',
+          'To Build a Home': 'assets/music-covers/default-cover.jpg',
+          'Fields of Gold': 'assets/music-covers/default-cover.jpg',
+          'Three Little Birds': 'assets/music-covers/three-little-birds.jpg',
+          'Nara': 'assets/music-covers/default-cover.jpg',
+          'Kiss of Life': 'assets/music-covers/default-cover.jpg',
+          'Ain’t No Sunshine': 'assets/music-covers/weightless.jpg',
+          'Weightless': 'assets/music-covers/weightless.jpg',
+          'Mojabi Ghost': 'assets/music-covers/default-cover.jpg',
+          'Bridge Over Troubled Water': 'assets/music-covers/default-cover.jpg',
+          'Rise Up': 'assets/music-covers/default-cover.jpg',
+          'Brave': 'assets/music-covers/default-cover.jpg',
+          'Ain’t No Mountain High Enough': 'assets/music-covers/default-cover.jpg',
+          'What a Wonderful World': 'assets/music-covers/what-a-wonderful-world.jpg',
+          'Man in the Mirror': 'assets/music-covers/default-cover.jpg',
+          'Keep Your Head Up': 'assets/music-covers/default-cover.jpg',
+          'Unstoppable': 'assets/music-covers/default-cover.jpg',
+          'Hall of Fame': 'assets/music-covers/default-cover.jpg',
+          'I Can See Clearly Now': 'assets/music-covers/default-cover.jpg',
+          'Lovely': 'assets/music-covers/lovely-day.jpg',
+          'Try Everything': 'assets/music-covers/default-cover.jpg',
+          'You’ve Got the Love': 'assets/music-covers/youve-got-the-love.jpg',
+          'What Is Love': 'assets/music-covers/default-cover.jpg',
+          'Lean on Me': 'assets/music-covers/lean-on-me.jpg',
+          'I Lived': 'assets/music-covers/default-cover.jpg',
+          'Unwritten': 'assets/music-covers/default-cover.jpg',
+          'Dog Days Are Over': 'assets/music-covers/dog-days-are-over.jpg',
+          'Soweto': 'assets/music-covers/jerusalema.jpg',
+          'Titanium': 'assets/music-covers/default-cover.jpg',
+          'Stronger': 'assets/music-covers/default-cover.jpg',
+          'Survivor': 'assets/music-covers/default-cover.jpg',
+          'Since U Been Gone': 'assets/music-covers/default-cover.jpg',
+          'Freedom! ’90': 'assets/music-covers/default-cover.jpg',
+          'Shake It Out': 'assets/music-covers/default-cover.jpg',
+          'No Scrubs': 'assets/music-covers/default-cover.jpg',
+          'Truth Hurts': 'assets/music-covers/default-cover.jpg',
+          'Gbogbo Bigi': 'assets/music-covers/default-cover.jpg',
+          'Soweto Blues': 'assets/music-covers/default-cover.jpg',
+          'I Will Survive': 'assets/music-covers/default-cover.jpg',
+          'Lose Yourself': 'assets/music-covers/default-cover.jpg',
+          'Run the World': 'assets/music-covers/default-cover.jpg',
+          'Don’t Stop Me Now': 'assets/music-covers/default-cover.jpg',
+          'Alive': 'assets/music-covers/default-cover.jpg',
+          'The Man': 'assets/music-covers/default-cover.jpg',
+          'Love Nwantiti': 'assets/music-covers/water.jpg',
+          'Mnike': 'assets/music-covers/water.jpg',
+          'September Song': 'assets/music-covers/september.jpg',
+          'Signed, Sealed, Delivered': 'assets/music-covers/default-cover.jpg',
+          'Dancing Queen': 'assets/music-covers/dancing-queen.jpg',
+          'Johnny B. Goode': 'assets/music-covers/default-cover.jpg',
+          'Good Times': 'assets/music-covers/default-cover.jpg',
+          'Crazy in Love': 'assets/music-covers/default-cover.jpg',
+          'Calm Down': 'assets/music-covers/water.jpg',
+          'Ye': 'assets/music-covers/default-cover.jpg',
+          'Love Me Again': 'assets/music-covers/default-cover.jpg',
+          'Doo Wop': 'assets/music-covers/default-cover.jpg',
+          'Mambo No. 5': 'assets/music-covers/default-cover.jpg',
+          'Kuku': 'assets/music-covers/default-cover.jpg',
+          'I Gotta Feeling': 'assets/music-covers/default-cover.jpg',
+          'Best Day of My Life': 'assets/music-covers/default-cover.jpg',
+          'Jamming': 'assets/music-covers/three-little-birds.jpg',
+          'Dynamite': 'assets/music-covers/default-cover.jpg',
+          'Waka Waka': 'assets/music-covers/waka-waka.jpg',
+          'A Forest': 'assets/music-covers/default-cover.jpg',
+          'Tadow': 'assets/music-covers/default-cover.jpg',
+          'Baba Yetu': 'assets/music-covers/water.jpg',
+          'The Sound of Silence': 'assets/music-covers/default-cover.jpg',
+          'Virtual Insanity': 'assets/music-covers/default-cover.jpg',
+          'Electric Relaxation': 'assets/music-covers/default-cover.jpg',
+          'Time Moves Slow': 'assets/music-covers/default-cover.jpg',
+          'Roads': 'assets/music-covers/default-cover.jpg',
+          'The Less I Know the Better': 'assets/music-covers/default-cover.jpg',
+          'Cantaloupe Island': 'assets/music-covers/default-cover.jpg',
+          'No Ordinary Love': 'assets/music-covers/default-cover.jpg',
+          'The Chain': 'assets/music-covers/default-cover.jpg',
+          'Divenire': 'assets/music-covers/default-cover.jpg',
+          'Sinnerman': 'assets/music-covers/default-cover.jpg',
+          'Breezeblocks': 'assets/music-covers/default-cover.jpg',
+          'African Queen': 'assets/music-covers/default-cover.jpg'
+        };
+        return map[titleKey] || 'assets/music-covers/default-cover.jpg';
+      }
+
+      function renderSuggestions() { suggestions.replaceChildren(); catalog[selectedMood].forEach((song) => { const card = document.createElement('div'); card.className = 'song-card'; card.innerHTML = `<div class="song-info"><img class="song-cover" src="${resolveReuseCover(song[0])}" alt="${song[0]} cover art" /><div><strong>${song[0]}</strong><span>${song[1]}</span></div></div><button class="add-song" type="button">Add</button>`; card.querySelector('button').addEventListener('click', () => addSongToPlaylist(song)); suggestions.appendChild(card); }); }
+
+      function renderPlaylistAssistant() {
+        const genreFilter = document.getElementById('playlist-assistant-genre')?.value || 'all';
+        if (!assistantSuggestions) return;
+
+        const picks = Object.entries(catalog)
+          .flatMap(([moodKey, songs]) => songs.map((song) => ({ moodKey, song })))
+          .filter(({ song, moodKey }) => {
+            const matchesMood = selectedMood === moodKey || selectedMood === 'calm';
+            const genreText = song[1].toLowerCase();
+            const genreMatch = genreFilter === 'all' || genreText.includes(genreFilter.toLowerCase());
+            return matchesMood && genreMatch;
+          })
+          .slice(0, 4)
+          .map(({ song }) => song);
+
+        assistantSuggestions.replaceChildren();
+        if (!picks.length) {
+          assistantSuggestions.innerHTML = '<p class="tool-intro">No matching songs yet. Try another genre mix.</p>';
+          return;
+        }
+
+        picks.forEach((song) => {
+          const card = document.createElement('div');
+          card.className = 'song-card';
+          card.innerHTML = `<div class="song-info"><img class="song-cover" src="${resolveReuseCover(song[0])}" alt="${song[0]} cover art" /><div><strong>${song[0]}</strong><span>${song[1]}</span></div></div><button class="add-song" type="button">Add</button>`;
+          card.querySelector('button').addEventListener('click', () => addSongToPlaylist(song));
+          assistantSuggestions.appendChild(card);
+        });
+      }
+
+      function renderPlaylist() { list.replaceChildren(); count.textContent = `(${playlist.length} ${playlist.length === 1 ? 'song' : 'songs'})`; progress.textContent = playlist.length >= 20 ? 'Minimum reached. Your playlist is ready to save.' : `${20 - playlist.length} more ${20 - playlist.length === 1 ? 'song' : 'songs'} needed before saving.`; if (!playlist.length) { list.innerHTML = '<p class="tool-intro">Your chosen songs will appear here.</p>'; return; } playlist.forEach((song, index) => { const item = document.createElement('div'); item.className = 'playlist-item'; item.innerHTML = `<span><strong>${song[0]}</strong><br><small>${song[1]}</small></span><button class="remove-song" type="button">Remove</button>`; item.querySelector('button').addEventListener('click', () => { playlist.splice(index, 1); renderPlaylist(); }); list.appendChild(item); }); }
+      document.querySelectorAll('.mood-tab').forEach((tab) => tab.addEventListener('click', () => { selectedMood = tab.dataset.mood; document.querySelectorAll('.mood-tab').forEach((item) => item.classList.toggle('active', item === tab)); renderSuggestions(); renderPlaylistAssistant(); }));
+      document.getElementById('playlist-assistant-btn').addEventListener('click', renderPlaylistAssistant);
+      document.getElementById('playlist-assistant-genre').addEventListener('change', renderPlaylistAssistant);
+      document.getElementById('save-playlist').addEventListener('click', () => { if (playlist.length < 20) { message.textContent = `Add ${20 - playlist.length} more ${20 - playlist.length === 1 ? 'song' : 'songs'} before saving.`; return; } localStorage.setItem('newDawnCuratedPlaylist', JSON.stringify(playlist)); message.textContent = 'Your 20+ song playlist is saved privately on this device.'; });
+      document.getElementById('download-playlist').addEventListener('click', () => { if (playlist.length < 20) { message.textContent = 'Reach the 20-song minimum before downloading.'; return; } const rows = playlist.map((song, index) => `<li><strong>${index + 1}. ${song[0]}</strong><br><small>${song[1]}</small><br><a href="${song[2]}" target="_blank" rel="noopener">Play on Spotify</a></li>`).join(''); const content = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>New Dawn Playlist</title><style>body{max-width:44rem;margin:2rem auto;padding:0 1rem;background:#f2e6d0;color:#2e2a27;font:16px Segoe UI,sans-serif}h1{font-family:Georgia,serif}li{margin:1rem 0;padding:1rem;background:#fffaf4;border-radius:10px;line-height:1.6}a{color:#8f6b4a;font-weight:700}</style></head><body><h1>My New Dawn Playlist</h1><p>Open a song to play it on Spotify. An internet connection is required.</p><ol>${rows}</ol></body></html>`; const link = document.createElement('a'); link.download = 'new-dawn-playlist.html'; link.href = URL.createObjectURL(new Blob([content], { type: 'text/html' })); link.click(); window.setTimeout(() => URL.revokeObjectURL(link.href), 1000); message.textContent = 'Your playable playlist page has been downloaded.'; });
+      document.getElementById('clear-playlist').addEventListener('click', () => { playlist = []; localStorage.removeItem('newDawnCuratedPlaylist'); renderPlaylist(); message.textContent = 'Your playlist has been cleared.'; });
+      renderSuggestions(); renderPlaylist(); renderPlaylistAssistant();
+    </script>
+  </body>
+</html>

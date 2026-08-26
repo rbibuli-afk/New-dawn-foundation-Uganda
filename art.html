@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Art Therapy | Mental Health Corner</title>
+    <style>
+      :root {
+        --bg: #F2E6D0;
+        --bg-dark: #E8D8BE;
+        --cream: #F2E6D0;
+        --sand: #D9B98F;
+        --terra: #C97C5D;
+        --brown: #8F6B4A;
+        --dark: #2E2A27;
+        --white: #fffaf4;
+        --muted: rgba(46,42,39,0.72);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: linear-gradient(135deg, var(--bg), #EDE0C8);
+        color: var(--dark);
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+      }
+      a { text-decoration: none; }
+      h1, h2, h3 { font-family: 'Algerian', 'Georgia', serif; }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(46,42,39,0.92);
+        border-bottom: 1px solid rgba(201,124,93,0.2);
+      }
+      .container { width: min(100%, 72rem); margin: 0 auto; padding: 0 1.5rem; }
+      .topbar-inner {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 700;
+        color: var(--cream);
+      }
+      .brand-mark {
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--terra), var(--sand));
+        color: var(--white);
+      }
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .nav a { color: var(--cream); }
+      .nav a:hover { color: var(--white); }
+      .page {
+        min-height: calc(100vh - 140px);
+        padding: 4rem 0 5rem;
+      }
+      .card {
+        background: rgba(255,255,255,0.72);
+        border: 1px solid rgba(143,107,74,0.18);
+        border-radius: 1.5rem;
+        box-shadow: 0 12px 30px rgba(143,107,74,0.08);
+        padding: 2rem;
+      }
+      .eyebrow {
+        margin: 0 0 1rem;
+        color: var(--terra);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.2rem;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0 0 1rem;
+        font-size: clamp(2.2rem, 5vw, 3.5rem);
+        color: var(--dark);
+      }
+      p {
+        margin: 0 0 1rem;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+      .art-tool {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        border-radius: 1.25rem;
+        background: rgba(46,42,39,0.96);
+        color: var(--white);
+      }
+      .art-tool h2 { margin: 0 0 0.45rem; color: var(--white); }
+      .tool-intro { color: rgba(242,230,208,0.78); }
+      .art-prompt { margin: 1.2rem 0 0.8rem; color: var(--cream); font-size: 1.1rem; font-weight: 700; }
+      .prompt-button, .art-action { display: inline-flex; align-items: center; justify-content: center; border: none; border-radius: 999px; padding: 0.8rem 1.2rem; background: linear-gradient(135deg, var(--terra), var(--brown)); color: var(--white); font: inherit; font-weight: 700; cursor: pointer; box-shadow: 0 10px 22px rgba(201,124,93,0.18); transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease; }
+      .prompt-button:hover, .art-action:hover { transform: translateY(-1px); box-shadow: 0 14px 28px rgba(201,124,93,0.24); filter: brightness(1.03); }
+      .art-controls { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
+      .color-label, .brush-label { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--cream); font-size: 0.9rem; font-weight: 700; }
+      .color-picker { width: 2.4rem; height: 2.4rem; padding: 0.15rem; border: 0; border-radius: 50%; background: transparent; cursor: pointer; }
+      .brush-range { accent-color: var(--terra); }
+      .canvas-wrap { padding: 0.6rem; border-radius: 0.8rem; background: #fffaf4; }
+      #art-canvas { display: block; width: 100%; height: 28rem; border-radius: 0.45rem; background: #fffaf4; cursor: crosshair; touch-action: none; }
+      .art-actions { display: flex; justify-content: space-between; gap: 0.7rem; flex-wrap: wrap; margin-top: 1rem; }
+      .art-action.primary { background: linear-gradient(135deg, var(--terra), var(--brown)); color: var(--white); }
+      .art-status { min-height: 1.4rem; margin: 0; color: var(--cream); font-size: 0.86rem; font-weight: 700; }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin: 1.5rem 0 0;
+      }
+      .tags span {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(201,124,93,0.12);
+        color: var(--brown);
+        font-size: 0.76rem;
+        font-weight: 700;
+      }
+      .button {
+        display: inline-flex;
+        padding: 0.9rem 1.5rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--terra), var(--brown));
+        color: var(--white);
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+      }
+      footer {
+        padding: 2rem 1.5rem;
+        background: var(--dark);
+        border-top: 1px solid rgba(217,185,143,0.15);
+        text-align: center;
+        color: rgba(242,230,208,0.7);
+      }
+      @media (max-width: 760px) {
+        .topbar-inner { justify-content: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div class="brand">
+          <span class="brand-mark">✦</span>
+          <span>New Dawn Foundation Uganda</span>
+        </div>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="home.html">Home</a>
+          <a href="about us.html">About Us</a>
+          <a href="mental health corner.html">Mental Health Corner</a>
+          <a href="events.html">Events</a>
+          <a href="support us.html">Support Us</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <div class="container">
+        <a class="button" href="mental health corner.html">← Back to Mental Health Corner</a>
+        <div class="card">
+          <p class="eyebrow">Art Therapy</p>
+          <h1>Colour outside the lines.</h1>
+          <p>Art therapy is not about being skilled. It is about giving feelings a shape, colour, or pattern that can be seen without needing to explain them perfectly.</p>
+          <p><strong>Try a prompt:</strong> draw how stress feels in your body, choose colours that match your mood, or make a chaotic abstract pattern and notice what it reveals about what you are carrying.</p>
+          <p>Creativity can be a healthy release valve. When words feel stuck, visual expression helps the emotion move through you instead of piling up inside.</p>
+          <div class="tags">
+            <span>Colour and movement</span>
+            <span>Creative expression</span>
+            <span>A non-verbal release</span>
+          </div>
+
+          <section class="art-tool" aria-labelledby="art-heading">
+            <h2 id="art-heading">Make something only you can make</h2>
+            <p class="tool-intro">There is no wrong drawing here. Follow the prompt, draw freely, or let your hand choose what happens next.</p>
+            <p class="art-prompt" id="art-prompt">Draw the shape of the feeling you are carrying.</p>
+            <button class="prompt-button" id="new-art-prompt" type="button">Give me another prompt</button>
+            <div class="art-controls">
+              <label class="color-label" for="color-picker">Colour <input class="color-picker" id="color-picker" type="color" value="#c97c5d" /></label>
+              <label class="brush-label" for="brush-size">Brush size <input class="brush-range" id="brush-size" type="range" min="2" max="36" value="8" /> <span id="brush-value">8px</span></label>
+            </div>
+            <div class="canvas-wrap"><canvas id="art-canvas" aria-label="Drawing canvas"></canvas></div>
+            <div class="art-actions">
+              <p class="art-status" id="art-status" aria-live="polite">Your canvas is ready.</p>
+              <div><button class="art-action" id="clear-art" type="button">Clear canvas</button> <button class="art-action primary" id="download-art" type="button">Download artwork</button></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      &copy; 2026 New Dawn Foundation Uganda
+    </footer>
+
+    <script>
+      const canvas = document.getElementById('art-canvas');
+      const context = canvas.getContext('2d');
+      const colorPicker = document.getElementById('color-picker');
+      const brushSize = document.getElementById('brush-size');
+      const brushValue = document.getElementById('brush-value');
+      const artStatus = document.getElementById('art-status');
+      const artPrompts = [
+        'Draw the shape of the feeling you are carrying.',
+        'Choose three colours for how today feels.',
+        'Draw a place where your body feels safe.',
+        'Turn one worry into a pattern and soften its edges.',
+        'Make a path from where you are to where you want to be.'
+      ];
+      let drawing = false;
+
+      function resizeCanvas() {
+        const ratio = window.devicePixelRatio || 1;
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        const image = canvas.width ? canvas.toDataURL() : null;
+        canvas.width = width * ratio;
+        canvas.height = height * ratio;
+        context.scale(ratio, ratio);
+        context.lineCap = 'round';
+        context.lineJoin = 'round';
+        if (image) { const savedImage = new Image(); savedImage.onload = () => context.drawImage(savedImage, 0, 0, width, height); savedImage.src = image; }
+      }
+
+      function pointFromEvent(event) {
+        const bounds = canvas.getBoundingClientRect();
+        return { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
+      }
+
+      canvas.addEventListener('pointerdown', (event) => { drawing = true; canvas.setPointerCapture(event.pointerId); const point = pointFromEvent(event); context.beginPath(); context.moveTo(point.x, point.y); });
+      canvas.addEventListener('pointermove', (event) => { if (!drawing) return; const point = pointFromEvent(event); context.strokeStyle = colorPicker.value; context.lineWidth = Number(brushSize.value); context.lineTo(point.x, point.y); context.stroke(); });
+      canvas.addEventListener('pointerup', () => { drawing = false; });
+      canvas.addEventListener('pointercancel', () => { drawing = false; });
+      brushSize.addEventListener('input', () => { brushValue.textContent = `${brushSize.value}px`; });
+      document.getElementById('new-art-prompt').addEventListener('click', () => { const current = artPrompts.indexOf(document.getElementById('art-prompt').textContent); document.getElementById('art-prompt').textContent = artPrompts[(current + 1) % artPrompts.length]; });
+      document.getElementById('clear-art').addEventListener('click', () => { context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight); artStatus.textContent = 'A fresh canvas is ready.'; });
+      document.getElementById('download-art').addEventListener('click', () => { const link = document.createElement('a'); link.download = 'new-dawn-artwork.png'; link.href = canvas.toDataURL('image/png'); link.click(); artStatus.textContent = 'Your artwork has been downloaded.'; });
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+    </script>
+  </body>
+</html>

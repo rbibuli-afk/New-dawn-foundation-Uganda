@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Dawn Foundation Uganda</title>
+    <style>
+      :root {
+        --bg-deep: #2E2A27;
+        --bg-mid: #E8D8BE;
+        --bg-soft: #F7F0E4;
+        --cream: #F2E6D0;
+        --sand: #D9B98F;
+        --terra: #C97C5D;
+        --brown: #8F6B4A;
+        --text: #2E2A27;
+        --muted: rgba(46, 42, 39, 0.72);
+        --white: #fffaf4;
+      }
+
+      * { box-sizing: border-box; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        margin: 0;
+        background: linear-gradient(135deg, var(--bg-soft), var(--cream));
+        color: var(--text);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      img, svg {
+        display: block;
+        max-width: 100%;
+      }
+
+      main {
+        background: var(--bg-deep);
+      }
+
+      .container {
+        width: min(100%, 72rem);
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(46, 42, 39, 0.92);
+        border-bottom: 1px solid rgba(201, 124, 93, 0.2);
+      }
+
+      .topbar-inner {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 700;
+        color: var(--cream);
+      }
+
+      .brand-mark {
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--terra), var(--sand));
+        color: var(--white);
+        font-size: 1.1rem;
+        line-height: 1;
+      }
+
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .nav a {
+        color: var(--cream);
+        transition: color 0.2s ease;
+      }
+
+      .nav a:hover {
+        color: var(--white);
+      }
+
+      .hero {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: var(--bg-deep);
+      }
+
+      .orb-layer,
+      .stars-layer,
+      .grid-layer {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .orb-layer {
+        transform: translateY(0);
+        transition: transform 0.2s ease-out;
+      }
+
+      .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+      }
+
+      .orb.one {
+        width: 24rem;
+        height: 24rem;
+        top: 25%;
+        left: 25%;
+        opacity: 0.18;
+        background: radial-gradient(circle, rgba(201,124,93,0.9), transparent);
+      }
+
+      .orb.two {
+        width: 20rem;
+        height: 20rem;
+        top: 33%;
+        right: 25%;
+        opacity: 0.2;
+        background: radial-gradient(circle, rgba(217,185,143,0.9), transparent);
+        animation: pulse 3s ease-in-out 1s infinite;
+      }
+
+      .orb.three {
+        width: 16rem;
+        height: 16rem;
+        bottom: 25%;
+        left: 33%;
+        opacity: 0.15;
+        background: radial-gradient(circle, rgba(143,107,74,0.75), transparent);
+        animation: pulse 4s ease-in-out 0.5s infinite;
+      }
+
+      .star {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.9);
+        animation: pulse 2.5s ease-in-out infinite;
+      }
+
+      .grid-layer {
+        opacity: 0.08;
+        background-image: linear-gradient(rgba(201,124,93,0.44) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(201,124,93,0.44) 1px, transparent 1px);
+        background-size: 80px 80px;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 10;
+        width: min(100%, 64rem);
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 1s ease, transform 1s ease;
+      }
+
+      .hero-content.visible {
+        opacity: 1;
+        transform: none;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.7rem 1rem;
+        border: 1px solid rgba(201,124,93,0.4);
+        border-radius: 999px;
+        background: rgba(201,124,93,0.1);
+        color: var(--terra);
+        font-size: 0.875rem;
+        margin-bottom: 2rem;
+        backdrop-filter: blur(8px);
+      }
+
+      .badge svg {
+        color: var(--terra);
+      }
+
+      h1, h2, h3 {
+        margin: 0;
+        font-family: 'Algerian', 'Georgia', serif;
+      }
+
+      .hero-title {
+        font-family: 'Algerian', 'Georgia', serif;
+        font-size: clamp(3rem, 7vw, 6rem);
+        font-weight: 700;
+        line-height: 1.05;
+        margin-bottom: 1.5rem;
+        color: #fff;
+      }
+
+      .hero-title .highlight {
+        display: block;
+        background: linear-gradient(135deg, var(--terra), var(--brown));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .hero-copy {
+        max-width: 44rem;
+        margin: 0 auto 3rem;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: clamp(1.2rem, 2vw, 1.8rem);
+        line-height: 1.4;
+        color: var(--brown);
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .button,
+      .button-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem 2rem;
+        border-radius: 999px;
+        font-weight: 700;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      }
+
+      .button {
+        color: var(--white);
+        background: linear-gradient(135deg, var(--terra), var(--brown));
+        box-shadow: 0 0 0 rgba(201, 124, 93, 0);
+      }
+
+      .button:hover,
+      .button-secondary:hover,
+      .cta-button:hover {
+        transform: translateY(-2px);
+      }
+
+      .button:hover {
+        box-shadow: 0 16px 28px rgba(201, 124, 93, 0.28);
+      }
+
+      .button-secondary {
+        color: var(--brown);
+        background: rgba(143,107,74,0.06);
+        border: 1px solid rgba(143,107,74,0.35);
+        backdrop-filter: blur(8px);
+      }
+
+      .button-secondary:hover {
+        border-color: rgba(143,107,74,0.45);
+        color: var(--dark);
+      }
+
+      .scroll-cue {
+        position: absolute;
+        left: 50%;
+        bottom: -6rem;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 1s ease 1.2s;
+      }
+
+      .scroll-cue.visible {
+        opacity: 1;
+      }
+
+      .scroll-cue .track {
+        width: 1.5rem;
+        height: 2.5rem;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 999px;
+        display: flex;
+        justify-content: center;
+        padding-top: 0.5rem;
+      }
+
+      .scroll-cue .thumb {
+        width: 0.25rem;
+        height: 0.5rem;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 999px;
+        animation: bounce 2s ease-in-out infinite;
+      }
+
+      section {
+        position: relative;
+      }
+
+      .section-inner {
+        width: min(100%, 72rem);
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      .section-vision,
+      .section-goals,
+      .section-statement,
+      .section-cta,
+      .section-footer {
+        overflow: hidden;
+      }
+
+      .section-vision {
+        padding: 7rem 0;
+        background: linear-gradient(180deg, #F7F0E4 0%, #EDE0C8 100%);
+      }
+
+      .vision-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4rem;
+        align-items: center;
+      }
+
+      .vision-glow {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 50%;
+        height: 100%;
+        opacity: 0.08;
+        background: radial-gradient(ellipse at right, rgba(201,124,93,0.9), transparent 70%);
+      }
+
+      .icon-box {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 5rem;
+        height: 5rem;
+        border-radius: 1rem;
+        margin-bottom: 1.5rem;
+        background: rgba(124, 58, 237, 0.2);
+        border: 1px solid rgba(124, 58, 237, 0.3);
+      }
+
+      .eyebrow {
+        margin: 0 0 0.75rem;
+        color: var(--terra);
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.22rem;
+      }
+
+      .section-heading {
+        margin: 0 0 1.5rem;
+        font-family: 'Algerian', 'Georgia', serif;
+        font-size: clamp(2.5rem, 4vw, 4rem);
+        line-height: 1.1;
+        color: var(--dark);
+      }
+
+      #vision-heading,
+      #mission-heading {
+        font-family: Arial, sans-serif;
+      }
+
+      .lead {
+        margin: 0;
+        color: var(--brown);
+        font-size: 1.125rem;
+        line-height: 1.8;
+      }
+
+      .feature-panel {
+        position: relative;
+        padding: 2rem;
+        border-radius: 2rem;
+        background: linear-gradient(135deg, rgba(201,124,93,0.12), rgba(217,185,143,0.18));
+        border: 1px solid rgba(201,124,93,0.2);
+        overflow: hidden;
+      }
+
+      .feature-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .feature-list li {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .feature-check {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: linear-gradient(135deg, var(--terra), var(--brown));
+      }
+
+      .feature-text {
+        color: var(--dark);
+        font-size: 1.125rem;
+      }
+
+      .feature-orb {
+        position: absolute;
+        right: -2rem;
+        bottom: -2rem;
+        width: 10rem;
+        height: 10rem;
+        border-radius: 50%;
+        opacity: 0.18;
+        background: radial-gradient(circle, rgba(217,185,143,0.7), transparent);
+      }
+
+      .section-mission {
+        padding: 7rem 0;
+        background: #E8D8BE;
+      }
+
+      .mission-bg {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.35;
+        background: radial-gradient(circle at 20% 50%, rgba(201,124,93,0.18) 0%, transparent 50%),
+          radial-gradient(circle at 80% 50%, rgba(143,107,74,0.12) 0%, transparent 50%);
+      }
+
+      .mission-header {
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+
+      .mission-grid {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.5rem;
+      }
+
+      .mission-card {
+        height: 100%;
+        padding: 2rem;
+        border-radius: 1.5rem;
+        background: rgba(255,255,255,0.28);
+        border: 1px solid rgba(143,107,74,0.18);
+        box-shadow: 0 4px 24px rgba(143,107,74,0.07);
+        transition: transform 0.3s ease;
+      }
+
+      .mission-card:hover {
+        transform: translateY(-0.5rem);
+      }
+
+      .mission-icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        border: 1px solid rgba(201,124,93,0.3);
+        background: rgba(201,124,93,0.12);
+      }
+
+      .mission-card h3 {
+        margin-bottom: 0.75rem;
+        font-family: 'Algerian', 'Georgia', serif;
+        font-size: 1.5rem;
+        color: var(--dark);
+      }
+
+      .mission-card p {
+        margin: 0;
+        color: var(--brown);
+        line-height: 1.8;
+      }
+
+      .section-statement {
+        padding: 7rem 0;
+        background: linear-gradient(135deg, #EDE0C8, #F2E6D0);
+      }
+
+      .statement-line {
+        position: absolute;
+        top: 50%;
+        width: 25%;
+        height: 1px;
+        opacity: 0.2;
+      }
+
+      .statement-line.left {
+        left: 0;
+        background: linear-gradient(to right, transparent, var(--terra));
+      }
+
+      .statement-line.right {
+        right: 0;
+        background: linear-gradient(to left, transparent, var(--terra));
+      }
+
+      .statement-box {
+        max-width: 52rem;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .quote-mark {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: rgba(124, 58, 237, 0.4);
+        font-size: 5rem;
+        line-height: 1;
+        font-family: 'Playfair Display', serif;
+      }
+
+      blockquote {
+        margin: 0;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: clamp(1.5rem, 2vw, 2.2rem);
+        line-height: 1.3;
+        color: var(--dark);
+      }
+
+      .author {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 2rem;
+      }
+
+      .author-avatar {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #7c3aed, #fbbf24);
+      }
+
+      .author strong {
+        display: block;
+        color: var(--dark);
+      }
+
+      .author span {
+        display: block;
+        color: var(--brown);
+        font-size: 0.875rem;
+      }
+
+      .section-goals {
+        padding: 7rem 0;
+        background: #F7F0E4;
+      }
+
+      .goals-header {
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+
+      .goals-grid {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1.5rem;
+      }
+
+      .goal-card {
+        height: 100%;
+        padding: 1.5rem;
+        border-radius: 1.5rem;
+        text-align: center;
+        background: linear-gradient(135deg, rgba(201,124,93,0.10), rgba(217,185,143,0.12));
+        border: 1px solid rgba(201,124,93,0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .goal-card:hover {
+        transform: translateY(-0.5rem);
+        box-shadow: 0 20px 35px rgba(143,107,74,0.12);
+      }
+
+      .goal-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 4rem;
+        height: 4rem;
+        margin-bottom: 1rem;
+        border-radius: 1rem;
+        background: rgba(201,124,93,0.12);
+        font-size: 2rem;
+      }
+
+      .goal-card h3 {
+        margin-bottom: 0.75rem;
+        font-family: 'Algerian', 'Georgia', serif;
+        font-size: 1.35rem;
+        color: var(--dark);
+      }
+
+      .goal-card p {
+        margin: 0;
+        color: var(--brown);
+        font-size: 0.875rem;
+        line-height: 1.7;
+      }
+
+      .section-cta {
+        padding: 6rem 0;
+        background: linear-gradient(135deg, var(--terra), var(--brown));
+      }
+
+      .cta-bg {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(ellipse at 50% 100%, rgba(242,230,208,0.2) 0%, transparent 70%);
+      }
+
+      .cta-content {
+        position: relative;
+        z-index: 1;
+        max-width: 52rem;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .cta-content h2 {
+        margin-bottom: 1.5rem;
+        font-family: 'Algerian', 'Georgia', serif;
+        font-size: clamp(2.5rem, 4vw, 4rem);
+        color: var(--white);
+      }
+
+      .cta-content p {
+        margin: 0 0 2.5rem;
+        font-size: 1.125rem;
+        line-height: 1.8;
+        color: rgba(255,255,255,0.8);
+      }
+
+      .cta-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.7rem;
+        padding: 1.1rem 2.5rem;
+        border-radius: 999px;
+        font-weight: 700;
+        color: var(--terra);
+        background: var(--cream);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .cta-button:hover {
+        box-shadow: 0 18px 30px rgba(46,42,39,0.2);
+      }
+
+      .cta-button svg {
+        transition: transform 0.2s ease;
+      }
+
+      .cta-button:hover svg {
+        transform: translateX(0.25rem);
+      }
+
+      .section-footer {
+        padding: 2.5rem 0;
+        background: #2E2A27;
+        border-top: 1px solid rgba(217,185,143,0.15);
+      }
+
+      .footer-wrap {
+        width: min(100%, 72rem);
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .footer-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .brand-mark {
+        width: 2rem;
+        height: 2rem;
+      }
+
+      .brand-label {
+        margin: 0;
+        color: var(--white);
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 0.875rem;
+      }
+
+      .brand-tag {
+        margin: 0;
+        color: rgba(242,230,208,0.4);
+        font-size: 0.75rem;
+      }
+
+      .footer-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .footer-nav a {
+        color: rgba(242,230,208,0.5);
+        font-size: 0.875rem;
+        transition: color 0.2s ease;
+      }
+
+      .footer-nav a:hover {
+        color: rgba(255,255,255,0.9);
+      }
+
+      .footer-copy {
+        margin: 0;
+        color: rgba(242,230,208,0.35);
+        font-size: 0.875rem;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(36px);
+        transition: opacity 0.75s ease, transform 0.75s ease;
+      }
+
+      .reveal.left {
+        transform: translateX(-36px);
+      }
+
+      .reveal.right {
+        transform: translateX(36px);
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: none;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 0.2; transform: scale(1); }
+        50% { opacity: 0.6; transform: scale(1.08); }
+      }
+
+      @keyframes bounce {
+        0%, 100% { transform: translateY(0); opacity: 0.6; }
+        50% { transform: translateY(10px); opacity: 1; }
+      }
+
+      @media (max-width: 900px) {
+        .vision-grid,
+        .mission-grid,
+        .goals-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .vision-grid,
+        .mission-grid,
+        .goals-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar-inner {
+          justify-content: center;
+        }
+
+        .hero-actions {
+          flex-direction: column;
+        }
+
+        .button,
+        .button-secondary,
+        .cta-button {
+          width: 100%;
+        }
+
+        .footer-wrap {
+          justify-content: center;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div class="brand">
+          <span class="brand-mark">✦</span>
+          <span>New Dawn Foundation Uganda</span>
+        </div>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="home.html">Home</a>
+          <a href="about us.html">About Us</a>
+          <a href="mental health corner.html">Mental Health Corner</a>
+          <a href="events.html">Events</a>
+          <a href="support us.html">Support Us</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="hero" aria-labelledby="hero-heading">
+        <div class="orb-layer" aria-hidden="true">
+          <div class="orb one"></div>
+          <div class="orb two"></div>
+          <div class="orb three"></div>
+        </div>
+
+        <div class="stars-layer" id="stars" aria-hidden="true"></div>
+        <div class="grid-layer" aria-hidden="true"></div>
+
+        <div class="hero-content" id="heroContent">
+          <div class="badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 21.35 10.55 20C5.4 15.36 2 12.28 2 8.5A4.5 4.5 0 0 1 6.5 4c1.74 0 3.41.81 4.5 2.09A6.13 6.13 0 0 1 15.5 4 4.5 4.5 0 0 1 20 8.5c0 3.78-3.4 6.86-8.55 11.5L12 21.35Z"/>
+            </svg>
+            Nurturing Minds, Transforming Lives
+          </div>
+
+          <h1 class="hero-title" id="hero-heading">
+            New Dawn Foundation
+            <span class="highlight">Uganda</span>
+          </h1>
+
+          <p class="hero-copy">
+            A sanctuary for mental wellness — where healing begins, communities unite, and every mind finds its peace.
+          </p>
+        </div>
+
+        <div class="scroll-cue" id="scrollCue" aria-hidden="true">
+          <div class="track">
+            <span class="thumb"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-vision" id="vision" aria-labelledby="vision-heading">
+        <div class="vision-glow" aria-hidden="true"></div>
+        <div class="section-inner">
+          <div class="vision-grid">
+            <div class="reveal left">
+              <div class="icon-box" aria-hidden="true">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </div>
+              <p class="eyebrow">Our Vision</p>
+              <h2 class="section-heading" id="vision-heading">A future where every person has access to mental health support and essential healthcare regardless of their financial circumstances.</h2>
+              <p class="lead">
+                A future where every person has access to mental health support and essential healthcare regardless of their financial circumstances.
+              </p>
+            </div>
+
+            <div class="reveal right">
+              <div class="feature-panel">
+                <ul class="feature-list">
+                  <li><span class="feature-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 2"/></svg></span><span class="feature-text">Accessible care for all</span></li>
+                  <li><span class="feature-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 2"/></svg></span><span class="feature-text">Stigma-free communities</span></li>
+                  <li><span class="feature-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 2"/></svg></span><span class="feature-text">Holistic healing approaches</span></li>
+                  <li><span class="feature-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 2"/></svg></span><span class="feature-text">Empowered individuals</span></li>
+                </ul>
+                <div class="feature-orb" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-mission" id="mission" aria-labelledby="mission-heading">
+        <div class="mission-bg" aria-hidden="true"></div>
+        <div class="section-inner">
+          <div class="mission-header reveal">
+            <p class="eyebrow">Our Mission</p>
+            <h2 class="section-heading" id="mission-heading">To promote positive mental health, reduce stigma, and provide financial assistance to individuals who cannot afford essential medical care, improving health outcomes and strengthening communities.</h2>
+          </div>
+
+          <ul class="mission-grid">
+            <li class="reveal">
+              <article class="mission-card">
+                <div class="mission-icon" style="background: rgba(124, 58, 237, 0.2); border-color: rgba(124, 58, 237, 0.4); color: #7c3aed;">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21.35 10.55 20C5.4 15.36 2 12.28 2 8.5A4.5 4.5 0 0 1 6.5 4c1.74 0 3.41.81 4.5 2.09A6.13 6.13 0 0 1 15.5 4 4.5 4.5 0 0 1 20 8.5c0 3.78-3.4 6.86-8.55 11.5L12 21.35Z"/></svg>
+                </div>
+                <h3>Compassionate Support</h3>
+                <p>Delivering empathetic, person-centered mental health services that meet people where they are.</p>
+              </article>
+            </li>
+            <li class="reveal">
+              <article class="mission-card">
+                <div class="mission-icon" style="background: rgba(168, 85, 247, 0.2); border-color: rgba(168, 85, 247, 0.4); color: #a855f7;">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73-1.64 7.03L12 17.27Z"/></svg>
+                </div>
+                <h3>Education &amp; Awareness</h3>
+                <p>Breaking down stigma through evidence-based education and open conversations about mental wellness.</p>
+              </article>
+            </li>
+            <li class="reveal">
+              <article class="mission-card">
+                <div class="mission-icon" style="background: rgba(251, 191, 36, 0.2); border-color: rgba(251, 191, 36, 0.4); color: #fbbf24;">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+                </div>
+                <h3>Lasting Impact</h3>
+                <p>Creating sustainable change in communities by building systems of ongoing mental and healthcare support.</p>
+              </article>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section-statement" id="statement" aria-labelledby="statement-heading">
+        <div class="statement-line left" aria-hidden="true"></div>
+        <div class="statement-line right" aria-hidden="true"></div>
+        <div class="section-inner">
+          <div class="statement-box reveal">
+            <p class="eyebrow" id="statement-heading">Personal Statement</p>
+            <figure>
+              <blockquote>
+                <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+                Here at New Dawn, we believe that no one deserves to struggle in terms of health care and mental health. That is why we offer a space for people to express themselves freely, be heard, and find support without fear or judgment.
+                <span class="quote-mark" aria-hidden="true" style="margin-top: 0.5rem;">&rdquo;</span>
+              </blockquote>
+              <figcaption class="author">
+                <div class="author-avatar" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21.35 10.55 20C5.4 15.36 2 12.28 2 8.5A4.5 4.5 0 0 1 6.5 4c1.74 0 3.41.81 4.5 2.09A6.13 6.13 0 0 1 15.5 4 4.5 4.5 0 0 1 20 8.5c0 3.78-3.4 6.86-8.55 11.5L12 21.35Z"/></svg>
+                </div>
+                <div>
+                  <strong>New Dawn Foundation</strong>
+                  <span>Community Care &amp; Mental Wellness</span>
+                </div>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-goals" id="goals" aria-labelledby="goals-heading">
+        <div class="section-inner">
+          <div class="goals-header reveal">
+            <p class="eyebrow">Our Goals</p>
+            <h2 class="section-heading" id="goals-heading">What we strive to achieve</h2>
+          </div>
+
+          <ul class="goals-grid">
+            <li class="reveal left">
+              <article class="goal-card">
+                <div class="goal-icon">🧠</div>
+                <h3>Mental Wellness Education</h3>
+                <p>Providing accessible knowledge and tools to help communities understand and prioritize mental health.</p>
+              </article>
+            </li>
+            <li class="reveal right">
+              <article class="goal-card">
+                <div class="goal-icon">🤝</div>
+                <h3>Community Support</h3>
+                <p>Building safe spaces where individuals can share, heal, and grow together without judgment.</p>
+              </article>
+            </li>
+            <li class="reveal left">
+              <article class="goal-card">
+                <div class="goal-icon">🌱</div>
+                <h3>Growth and happiness </h3>
+                <p>Making sure everyone is catered for and has the opportunity to grow in their happiness.</p>
+              </article>
+            </li>
+            <li class="reveal right">
+              <article class="goal-card">
+                <div class="goal-icon">💡</div>
+                <h3>Discovery &amp; Innovation</h3>
+                <p>Exploring new approaches and evidence-based mental health practices that may seem shallow and baseless but help to heal.</p>
+              </article>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section-cta" aria-labelledby="cta-heading">
+        <div class="cta-bg" aria-hidden="true"></div>
+        <div class="section-inner">
+          <div class="cta-content reveal">
+            <h2 id="cta-heading">Ready to learn more about us?</h2>
+            <p>
+              Discover our story, meet our team, and understand the heart behind everything we do at New Dawn Foundation.
+            </p>
+            <a class="cta-button" href="about us.html">
+              Learn More 
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <footer class="section-footer" role="contentinfo">
+        <div class="footer-wrap">
+          <div class="footer-brand">
+            <svg class="brand-mark" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="22" cy="22" r="21" fill="url(#footerLogoGrad)"/>
+              <path d="M22 10C16 10 11 15 11 21C11 24 12.5 26.5 15 28.5L22 34L29 28.5C31.5 26.5 33 24 33 21C33 15 28 10 22 10Z" fill="white" fill-opacity="0.9"/>
+              <circle cx="22" cy="21" r="4" fill="#7c3aed"/>
+              <defs>
+                <linearGradient id="footerLogoGrad" x1="0" y1="0" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#7c3aed"/>
+                  <stop offset="1" stop-color="#fbbf24"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div>
+              <p class="brand-label">New Dawn Foundation Uganda</p>
+              <p class="brand-tag">Nurturing Minds, Transforming Lives</p>
+            </div>
+          </div>
+          <p class="footer-copy">&copy; 2026 New Dawn Foundation Uganda</p>
+        </div>
+      </footer>
+    </main>
+
+    <script>
+      const revealItems = document.querySelectorAll('.reveal');
+      const heroContent = document.getElementById('heroContent');
+      const scrollCue = document.getElementById('scrollCue');
+      const orbLayer = document.querySelector('.orb-layer');
+      const starsContainer = document.getElementById('stars');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      revealItems.forEach((item) => observer.observe(item));
+
+      setTimeout(() => {
+        heroContent.classList.add('visible');
+        scrollCue.classList.add('visible');
+      }, 100);
+
+      const stars = Array.from({ length: 40 }, () => ({
+        size: (Math.random() * 2 + 1).toFixed(2),
+        top: (Math.random() * 100).toFixed(2),
+        left: (Math.random() * 100).toFixed(2),
+        opacity: (Math.random() * 0.5 + 0.1).toFixed(2),
+        duration: (Math.random() * 3 + 2).toFixed(2)
+      }));
+
+      stars.forEach((star) => {
+        const node = document.createElement('span');
+        node.className = 'star';
+        node.style.width = `${star.size}px`;
+        node.style.height = `${star.size}px`;
+        node.style.top = `${star.top}%`;
+        node.style.left = `${star.left}%`;
+        node.style.opacity = star.opacity;
+        node.style.animation = `pulse ${star.duration}s ease-in-out infinite`;
+        starsContainer.appendChild(node);
+      });
+
+      window.addEventListener('scroll', () => {
+        const offset = window.scrollY * 0.25;
+        orbLayer.style.transform = `translateY(${offset}px)`;
+      }, { passive: true });
+    </script>
+  </body>
+</html>
+

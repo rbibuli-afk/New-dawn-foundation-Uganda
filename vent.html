@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vent Out Space | Mental Health Corner</title>
+    <style>
+      :root {
+        --bg: #F2E6D0;
+        --bg-dark: #E8D8BE;
+        --cream: #F2E6D0;
+        --sand: #D9B98F;
+        --terra: #C97C5D;
+        --brown: #8F6B4A;
+        --dark: #2E2A27;
+        --white: #fffaf4;
+        --muted: rgba(46,42,39,0.72);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: linear-gradient(135deg, var(--bg), #EDE0C8);
+        color: var(--dark);
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+      }
+      a { text-decoration: none; }
+      h1, h2, h3 { font-family: 'Algerian', 'Georgia', serif; }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(46,42,39,0.92);
+        border-bottom: 1px solid rgba(201,124,93,0.2);
+      }
+      .container { width: min(100%, 72rem); margin: 0 auto; padding: 0 1.5rem; }
+      .topbar-inner {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 700;
+        color: var(--cream);
+      }
+      .brand-mark {
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--terra), var(--sand));
+        color: var(--white);
+      }
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .nav a { color: var(--cream); }
+      .nav a:hover { color: var(--white); }
+      .page {
+        min-height: calc(100vh - 140px);
+        padding: 4rem 0 5rem;
+      }
+      .card {
+        background: rgba(255,255,255,0.72);
+        border: 1px solid rgba(143,107,74,0.18);
+        border-radius: 1.5rem;
+        box-shadow: 0 12px 30px rgba(143,107,74,0.08);
+        padding: 2rem;
+      }
+      .eyebrow {
+        margin: 0 0 1rem;
+        color: var(--terra);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.2rem;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0 0 1rem;
+        font-size: clamp(2.2rem, 5vw, 3.5rem);
+        color: var(--dark);
+      }
+      p {
+        margin: 0 0 1rem;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+      .vent-tool {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        border-radius: 1.25rem;
+        background: rgba(46,42,39,0.96);
+        color: var(--white);
+      }
+      .vent-tool h2 { margin: 0 0 0.45rem; color: var(--white); }
+      .tool-intro { color: rgba(242,230,208,0.78); }
+      .prompt-line { margin: 1.25rem 0 0.55rem; color: var(--cream); font-weight: 700; }
+      .prompt-button, .vent-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 999px;
+        padding: 0.8rem 1.2rem;
+        background: linear-gradient(135deg, var(--terra), var(--brown));
+        color: var(--white);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 10px 22px rgba(201,124,93,0.18);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+      }
+      .prompt-button:hover, .vent-action:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 28px rgba(201,124,93,0.24);
+        filter: brightness(1.03);
+      }
+      .vent-input {
+        display: block;
+        width: 100%;
+        min-height: 16rem;
+        resize: vertical;
+        border: 1px solid rgba(242,230,208,0.3);
+        border-radius: 0.85rem;
+        padding: 1rem;
+        background: #fffaf4;
+        color: var(--dark);
+        font: inherit;
+        line-height: 1.7;
+      }
+      .vent-input:focus { outline: 3px solid rgba(217,185,143,0.7); outline-offset: 2px; }
+      .vent-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 0.8rem; }
+      .word-count, .privacy-note { margin: 0; color: rgba(242,230,208,0.72); font-size: 0.86rem; }
+      .vent-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+      .vent-action.primary { background: linear-gradient(135deg, var(--terra), var(--brown)); color: var(--white); }
+      .vent-action.burn { background: linear-gradient(135deg, #8d4a39, #5f2d26); color: #fff2d8; }
+      .saved-message { min-height: 1.4rem; margin: 0.9rem 0 0; color: var(--cream); font-weight: 700; }
+      .vent-writing { position: relative; }
+      .vent-tool.burning .vent-input { animation: burn-paper 1.8s ease-in forwards; pointer-events: none; }
+      .burn-flames { display: none; position: absolute; inset: auto 12% 3.5rem; height: 4.5rem; pointer-events: none; }
+      .vent-tool.burning .burn-flames { display: block; }
+      .flame { position: absolute; bottom: 0; width: 2rem; height: 4rem; border-radius: 60% 40% 55% 45%; background: linear-gradient(#ffd36b 10%, #ef8b38 55%, #9d3d2f); box-shadow: 0 0 1.2rem rgba(239,139,56,0.7); transform-origin: bottom center; animation: flame-dance 0.28s ease-in-out infinite alternate; }
+      .flame:nth-child(1) { left: 8%; height: 3rem; }
+      .flame:nth-child(2) { left: 33%; height: 4.5rem; animation-delay: -0.12s; }
+      .flame:nth-child(3) { left: 58%; height: 3.6rem; animation-delay: -0.2s; }
+      .flame:nth-child(4) { left: 82%; height: 2.8rem; animation-delay: -0.06s; }
+      @keyframes burn-paper { 0% { opacity: 1; filter: sepia(0) brightness(1); transform: translateY(0) scale(1); } 45% { filter: sepia(1) saturate(2) brightness(0.8); } 100% { opacity: 0; filter: grayscale(1) brightness(0.35); transform: translateY(2rem) scale(0.97); } }
+      @keyframes flame-dance { from { transform: rotate(-5deg) scaleY(0.9); } to { transform: rotate(6deg) scaleY(1.08); } }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin: 1.5rem 0 0;
+      }
+      .tags span {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(201,124,93,0.12);
+        color: var(--brown);
+        font-size: 0.76rem;
+        font-weight: 700;
+      }
+      .button {
+        display: inline-flex;
+        padding: 0.9rem 1.5rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--terra), var(--brown));
+        color: var(--white);
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+      }
+      footer {
+        padding: 2rem 1.5rem;
+        background: var(--dark);
+        border-top: 1px solid rgba(217,185,143,0.15);
+        text-align: center;
+        color: rgba(242,230,208,0.7);
+      }
+      @media (max-width: 760px) {
+        .topbar-inner { justify-content: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div class="brand">
+          <span class="brand-mark">✦</span>
+          <span>New Dawn Foundation Uganda</span>
+        </div>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="home.html">Home</a>
+          <a href="about us.html">About Us</a>
+          <a href="mental health corner.html">Mental Health Corner</a>
+          <a href="events.html">Events</a>
+          <a href="support us.html">Support Us</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <div class="container">
+        <a class="button" href="mental health corner.html">← Back to Mental Health Corner</a>
+        <div class="card">
+          <p class="eyebrow">Vent Out Space</p>
+          <h1>Say everything you have been holding in.</h1>
+          <p>This is a quiet space for pressure release. If your mind feels full, crowded, or exhausted, this page gives you room to put the weight down without being judged or edited.</p>
+          <p><strong>Use this space honestly:</strong> write what is frustrating you, what feels unfair, what you are tired of pretending is fine, or what you wish someone understood. You do not have to solve it right now — you only have to let it be real.</p>
+          <p>Vent spaces work best when they are honest and private. Do not filter your feelings into something “acceptable.” The goal is not to sound mature; the goal is to feel lighter.</p>
+          <div class="tags">
+            <span>Safe reflection</span>
+            <span>Private release</span>
+            <span>No pressure to be perfect</span>
+          </div>
+
+          <section class="vent-tool" aria-labelledby="vent-heading">
+            <h2 id="vent-heading">Put it down here</h2>
+            <p class="tool-intro">This writing stays in this browser only. Write freely, then save it privately or clear it when you are ready to let it go.</p>
+            <p class="prompt-line" id="vent-prompt">What is the hardest part of today?</p>
+            <button class="prompt-button" id="new-prompt" type="button">Give me another prompt</button>
+            <label for="vent-input" class="prompt-line">Your thoughts</label>
+            <div class="vent-writing">
+              <textarea class="vent-input" id="vent-input" placeholder="Start wherever the feeling begins..."></textarea>
+              <div class="burn-flames" aria-hidden="true"><span class="flame"></span><span class="flame"></span><span class="flame"></span><span class="flame"></span></div>
+            </div>
+            <div class="vent-footer">
+              <p class="word-count" id="word-count">0 words</p>
+              <div class="vent-actions">
+                <button class="vent-action primary" id="save-vent" type="button">Save privately</button>
+                <button class="vent-action burn" id="burn-vent" type="button">Burn this</button>
+                <button class="vent-action" id="clear-vent" type="button">Clear everything</button>
+              </div>
+            </div>
+            <p class="saved-message" id="saved-message" aria-live="polite"></p>
+            <p class="privacy-note">Avoid entering passwords or information that could identify another person.</p>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      &copy; 2026 New Dawn Foundation Uganda
+    </footer>
+
+    <script>
+      const ventInput = document.getElementById('vent-input');
+      const wordCount = document.getElementById('word-count');
+      const savedMessage = document.getElementById('saved-message');
+      const ventPrompt = document.getElementById('vent-prompt');
+      const ventTool = document.querySelector('.vent-tool');
+      const burnButton = document.getElementById('burn-vent');
+      const prompts = [
+        'What is the hardest part of today?',
+        'What do you wish you could say without being interrupted?',
+        'What are you tired of carrying alone?',
+        'What boundary was crossed for you?',
+        'What do you need someone to understand right now?'
+      ];
+
+      function updateWordCount() {
+        const words = ventInput.value.trim() ? ventInput.value.trim().split(/\s+/).length : 0;
+        wordCount.textContent = `${words} ${words === 1 ? 'word' : 'words'}`;
+      }
+
+      ventInput.value = localStorage.getItem('newDawnVentDraft') || '';
+      updateWordCount();
+      ventInput.addEventListener('input', updateWordCount);
+
+      document.getElementById('new-prompt').addEventListener('click', () => {
+        const currentIndex = prompts.indexOf(ventPrompt.textContent);
+        ventPrompt.textContent = prompts[(currentIndex + 1) % prompts.length];
+      });
+
+      document.getElementById('save-vent').addEventListener('click', () => {
+        localStorage.setItem('newDawnVentDraft', ventInput.value);
+        savedMessage.textContent = 'Your thoughts are saved privately on this device.';
+      });
+
+      burnButton.addEventListener('click', () => {
+        if (!ventInput.value.trim()) {
+          savedMessage.textContent = 'Write something first, then burn it when you are ready.';
+          return;
+        }
+        ventTool.classList.add('burning');
+        localStorage.removeItem('newDawnVentDraft');
+        savedMessage.textContent = 'Letting it go...';
+        window.setTimeout(() => {
+          ventInput.value = '';
+          ventTool.classList.remove('burning');
+          updateWordCount();
+          savedMessage.textContent = 'It has been released. Take one slow breath.';
+        }, 1800);
+      });
+
+      document.getElementById('clear-vent').addEventListener('click', () => {
+        ventInput.value = '';
+        localStorage.removeItem('newDawnVentDraft');
+        updateWordCount();
+        savedMessage.textContent = 'Your writing has been cleared from this device.';
+      });
+    </script>
+  </body>
+</html>

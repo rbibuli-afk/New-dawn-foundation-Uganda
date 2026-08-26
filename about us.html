@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us | New Dawn Foundation Uganda</title>
+    <style>
+      :root {
+        --bg: #F2E6D0;
+        --bg-dark: #E8D8BE;
+        --cream: #F2E6D0;
+        --sand: #D9B98F;
+        --terra: #C97C5D;
+        --brown: #8F6B4A;
+        --dark: #2E2A27;
+        --white: #fffaf4;
+        --muted: rgba(46,42,39,0.72);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: linear-gradient(135deg, var(--bg), #EDE0C8);
+        color: var(--dark);
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+      }
+      a { text-decoration: none; }
+      h1, h2, h3 { font-family: 'Algerian', 'Georgia', serif; }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(46,42,39,0.92);
+        border-bottom: 1px solid rgba(201,124,93,0.2);
+      }
+      .container { width: min(100%, 72rem); margin: 0 auto; padding: 0 1.5rem; }
+      .topbar-inner {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 700;
+        color: var(--cream);
+      }
+      .brand-mark {
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--terra), var(--sand));
+      }
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .nav a { color: var(--cream); }
+      .nav a:hover { color: var(--white); }
+      .hero {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 5rem 0;
+      }
+      .hero-box { max-width: 48rem; }
+      .icon-box {
+        width: 5rem;
+        height: 5rem;
+        margin: 0 auto 2rem;
+        border-radius: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--terra), var(--sand));
+      }
+      .eyebrow {
+        margin: 0 0 1rem;
+        color: var(--terra);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.2rem;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0 0 1.5rem;
+        font-family: 'Algerian', 'Georgia', serif;
+        font-size: clamp(2.8rem, 6vw, 4.5rem);
+        color: var(--dark);
+      }
+      .lead {
+        margin: 0 auto 2rem;
+        max-width: 42rem;
+        color: var(--muted);
+        font-size: clamp(1.1rem, 2vw, 1.5rem);
+        line-height: 1.8;
+      }
+      .button {
+        display: inline-flex;
+        padding: 1rem 2rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--terra), var(--brown));
+        color: var(--white);
+        font-weight: 700;
+        box-shadow: 0 12px 24px rgba(46,42,39,0.18), 0 4px 0 rgba(143,107,74,0.25);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: button-float 3s ease-in-out infinite;
+      }
+      .button:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 18px 30px rgba(46,42,39,0.24), 0 6px 0 rgba(143,107,74,0.25);
+      }
+      @keyframes button-float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+      }
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.5rem;
+        padding: 0 0 5rem;
+      }
+      .card {
+        padding: 2rem;
+        border-radius: 1.5rem;
+        background: rgba(255,255,255,0.28);
+        border: 1px solid rgba(143,107,74,0.18);
+        box-shadow: 0 10px 24px rgba(143,107,74,0.07);
+      }
+      .card h2 {
+        margin: 0 0 0.75rem;
+        font-family: 'Algerian', 'Georgia', serif;
+        font-size: 1.5rem;
+        color: var(--dark);
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+      footer {
+        padding: 2rem 1.5rem;
+        background: var(--dark);
+        border-top: 1px solid rgba(217,185,143,0.15);
+        text-align: center;
+        color: rgba(242,230,208,0.7);
+      }
+      @media (max-width: 760px) {
+        .topbar-inner { justify-content: center; }
+        .card-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div class="brand">
+          <span class="brand-mark">✦</span>
+          <span>New Dawn Foundation Uganda</span>
+        </div>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="home.html">Home</a>
+          <a href="about us.html">About Us</a>
+          <a href="mental health corner.html">Mental Health Corner</a>
+          <a href="events.html">Events</a>
+          <a href="support us.html">Support Us</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-box">
+          <div class="icon-box" aria-hidden="true">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 21.35 10.55 20C5.4 15.36 2 12.28 2 8.5A4.5 4.5 0 0 1 6.5 4c1.74 0 3.41.81 4.5 2.09A6.13 6.13 0 0 1 15.5 4 4.5 4.5 0 0 1 20 8.5c0 3.78-3.4 6.86-8.55 11.5L12 21.35Z"/>
+            </svg>
+          </div>
+          <p class="eyebrow">About Us</p>
+          <h1>Our Story</h1>
+          <p class="lead">
+          Every mind has an idea to share, we made this space because we believe we can help to impact and support.
+          Most think that just because its not bothering you it does not have to be addressed but we belive as a family we can help tackle problems related to mental health as well as funding in healthcare.
+          Many suffer to get medical care because of insufficient funds and end up suffering, some even dying due to the lack of support and manifestation of their disease. We as a famly believe we can support, right now we may not change lives of thousands of people but through a step at a time, we believe we shall reach there.
+          After all,a journey of a thousand miles begins with a single step. 
+          Welcome to the beginning of a new dawn, the journey has just begun.
+          </p>
+        </div>
+      </section>
+
+      <div class="container card-grid">
+        <article class="card">
+          <h2>Who We Are</h2>
+          <p> New Dawn Foundation Uganda is a non-profit, community-focused organization established to promote mental health awareness, support individuals experiencing mental health challenges, and provide financial assistance to people who cannot afford essential medical care.
+The organization will use digital platforms and community partnerships to identify needs, mobilize resources, and connect beneficiaries with appropriate support services.</p>
+        </article>
+        <article class="card">
+          <h2>Core Values</h2>
+          <p>
+<li><ul>Compassion</ul></li>
+<li><ul>Integrity</ul></li>
+<li><ul>Transparency</ul></li>
+<li><ul>Accountability</ul></li>
+<li><ul>Equity</ul></li>
+<li><ul>Respect</ul></li>
+<li><ul>Service</ul></li>
+<li><ul>Collaboration</ul></li>
+</p>
+        </article>
+        <article class="card">
+          <h2>Our Inspiration</h2>
+          <p>
+We are inspired by the belief that everyone deserves access to mental health support and essential healthcare, regardless of their financial circumstances. We aim to reduce stigma, support people facing mental health challenges, and help those who cannot afford necessary medical care. Our work is driven by compassion, dignity, equity, and community support, with the goal of creating healthier, stronger, and more resilient communities.
+</p>
+        </article>
+      </div>
+      <div align="center"> <a class="button" href="home.html">Back to Home</a>
+</div>
+    </main>
+
+    <footer>
+      &copy; 2026 New Dawn Foundation Uganda
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Write a Letter | Letters to the Unheard</title>
+    <style>
+      :root { --bg: #f2e6d0; --terra: #c97c5d; --brown: #8f6b4a; --dark: #2e2a27; --white: #fffaf4; --muted: rgba(46,42,39,0.72); }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: linear-gradient(135deg, var(--bg), #ede0c8); color: var(--dark); font-family: 'Segoe UI', Tahoma, sans-serif; }
+      a { text-decoration: none; }
+      h1, h2 { font-family: 'Algerian', Georgia, serif; }
+      .topbar { background: rgba(46,42,39,0.94); color: var(--white); }
+      .topbar-inner, .container { width: min(100%, 72rem); margin: 0 auto; padding: 0 1.5rem; }
+      .topbar-inner { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+      .brand { display: flex; align-items: center; gap: 0.75rem; font-weight: 700; }
+      .brand-mark { width: 2.2rem; height: 2.2rem; display: grid; place-items: center; border-radius: 50%; background: linear-gradient(135deg, var(--terra), #d9b98f); }
+      .nav { display: flex; gap: 1rem; flex-wrap: wrap; }
+      .nav a { color: var(--bg); }
+      .page { min-height: calc(100vh - 140px); padding: 4rem 0 5rem; }
+      .back { display: inline-flex; margin-bottom: 1.5rem; padding: 0.9rem 1.4rem; border-radius: 999px; background: var(--terra); color: var(--white); font-weight: 700; }
+      .paper { max-width: 54rem; margin: 0 auto; padding: clamp(1.5rem, 5vw, 3.5rem); background: #fff9d8; box-shadow: 0 1rem 2rem rgba(70,42,27,0.18); transform: rotate(-0.5deg); }
+      .pin { width: 1rem; height: 1rem; margin: -2rem auto 1.5rem; border-radius: 50%; background: #b84e3d; box-shadow: inset 0 2px 2px rgba(255,255,255,0.45); }
+      .eyebrow { margin: 0 0 0.8rem; color: var(--terra); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2rem; text-transform: uppercase; }
+      h1 { margin: 0 0 0.8rem; font-size: clamp(2rem, 5vw, 3.4rem); }
+      p { color: var(--muted); line-height: 1.8; }
+      .fields { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 0.8rem; margin-top: 1.5rem; }
+      label { display: flex; flex-direction: column; gap: 0.4rem; color: var(--dark); font-weight: 700; }
+      input, select, textarea { width: 100%; border: 1px solid rgba(143,107,74,0.3); border-radius: 0.65rem; padding: 0.8rem; background: var(--white); color: var(--dark); font: inherit; }
+      textarea { min-height: 22rem; margin-top: 0.8rem; resize: vertical; line-height: 1.8; }
+      input:focus, select:focus, textarea:focus { outline: 3px solid rgba(201,124,93,0.35); outline-offset: 2px; }
+      .prompt { margin: 1.5rem 0 0.4rem; color: var(--brown); font-weight: 700; }
+      .prompt-button, .save-button { display: inline-flex; align-items: center; justify-content: center; border: none; border-radius: 999px; padding: 0.85rem 1.2rem; font: inherit; font-weight: 700; cursor: pointer; box-shadow: 0 10px 22px rgba(201,124,93,0.18); transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease; }
+      .prompt-button { background: linear-gradient(135deg, #ead9ec, #d7c6d9); color: var(--dark); }
+      .save-button { background: linear-gradient(135deg, var(--terra), var(--brown)); color: var(--white); }
+      .prompt-button:hover, .save-button:hover { transform: translateY(-1px); box-shadow: 0 14px 28px rgba(201,124,93,0.24); filter: brightness(1.03); }
+      .actions { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
+      .count, .notice { margin: 0; font-size: 0.86rem; }
+      .notice { min-height: 1.3rem; color: var(--brown); font-weight: 700; }
+      footer { padding: 2rem 1.5rem; background: var(--dark); text-align: center; color: rgba(242,230,208,0.7); }
+      @media (max-width: 760px) { .topbar-inner { justify-content: center; } .fields { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <header class="topbar"><div class="topbar-inner"><div class="brand"><span class="brand-mark">✦</span><span>New Dawn Foundation Uganda</span></div><nav class="nav" aria-label="Main navigation"><a href="home.html">Home</a><a href="mental health corner.html">Mental Health Corner</a></nav></div></header>
+    <main class="page"><div class="container"><a class="back" href="letters.html">← Back to the wall</a><section class="paper" aria-labelledby="write-heading"><div class="pin" aria-hidden="true"></div><p class="eyebrow">A private page</p><h1 id="write-heading">Write what was left unheard.</h1><p>This letter stays in this browser only. You do not have to send it, explain it, or make it perfect.</p><div class="fields"><label for="recipient">This letter is for<select id="recipient"><option>My younger self</option><option>My future self</option><option>Someone I miss</option><option>Someone who hurt me</option><option>Someone I never got to thank</option><option>Myself, today</option></select></label><label for="title">Give it a title<input id="title" type="text" placeholder="A few words to hold this moment" /></label></div><p class="prompt" id="prompt">What do you wish this person could understand?</p><button class="prompt-button" id="new-prompt" type="button">Give me another prompt</button><label class="prompt" for="body">Your letter<textarea id="body" placeholder="Dear ..."></textarea></label><div class="actions"><p class="count" id="count">0 words</p><button class="save-button" id="save" type="button">Pin letter to the wall</button></div><p class="notice" id="notice" aria-live="polite"></p></section></div></main>
+    <footer>&copy; 2026 New Dawn Foundation Uganda</footer>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const recipient = document.getElementById('recipient');
+      const title = document.getElementById('title');
+      const body = document.getElementById('body');
+      const count = document.getElementById('count');
+      const notice = document.getElementById('notice');
+      const prompts = ['What do you wish this person could understand?', 'What did you need to hear at the time?', 'What are you ready to say for yourself now?', 'What do you want to remember about your own strength?', 'What would honesty sound like in this moment?'];
+      if (params.get('recipient')) recipient.value = params.get('recipient');
+      const saved = JSON.parse(localStorage.getItem('newDawnLetter') || 'null');
+      if (saved) { body.value = saved.body || ''; title.value = saved.title || ''; if (!params.get('recipient')) recipient.value = saved.recipient || recipient.value; }
+      function updateCount() { const words = body.value.trim() ? body.value.trim().split(/\s+/).length : 0; count.textContent = `${words} ${words === 1 ? 'word' : 'words'}`; }
+      body.addEventListener('input', updateCount); updateCount();
+      document.getElementById('new-prompt').addEventListener('click', () => { const current = prompts.indexOf(document.getElementById('prompt').textContent); document.getElementById('prompt').textContent = prompts[(current + 1) % prompts.length]; });
+      document.getElementById('save').addEventListener('click', () => { if (!body.value.trim()) { notice.textContent = 'Write a few words before pinning your letter.'; return; } localStorage.setItem('newDawnLetter', JSON.stringify({ body: body.value, title: title.value, recipient: recipient.value })); window.location.href = 'letters.html'; });
+    </script>
+  </body>
+</html>

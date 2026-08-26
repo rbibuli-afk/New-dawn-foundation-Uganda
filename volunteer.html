@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Volunteer | New Dawn Foundation Uganda</title>
+    <style>
+      :root {
+        --bg: #F2E6D0;
+        --cream: #F2E6D0;
+        --terra: #C97C5D;
+        --brown: #8F6B4A;
+        --dark: #2E2A27;
+        --white: #fffaf4;
+        --muted: rgba(46,42,39,0.72);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: linear-gradient(135deg, var(--bg), #EDE0C8);
+        color: var(--dark);
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+      }
+      a { text-decoration: none; }
+      h1, h2 { font-family: 'Algerian', 'Georgia', serif; }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(46,42,39,0.92);
+        border-bottom: 1px solid rgba(201,124,93,0.2);
+      }
+      .container { width: min(100%, 72rem); margin: 0 auto; padding: 0 1.5rem; }
+      .topbar-inner {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .brand { display: flex; align-items: center; gap: 0.75rem; color: var(--cream); font-weight: 700; }
+      .brand-mark {
+        width: 2.2rem;
+        height: 2.2rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--terra), #D9B98F);
+        color: var(--white);
+      }
+      .nav { display: flex; flex-wrap: wrap; gap: 1rem; }
+      .nav a { color: var(--cream); }
+      .nav a:hover { color: var(--white); }
+      main { min-height: calc(100vh - 140px); padding: 4rem 0 5rem; }
+      .back-link { display: inline-flex; margin-bottom: 2rem; color: var(--brown); font-weight: 700; }
+      .back-link:hover { color: var(--terra); }
+      .volunteer-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 0.8fr) minmax(20rem, 1.2fr);
+        gap: 3rem;
+        align-items: start;
+      }
+      .eyebrow {
+        margin: 0 0 1rem;
+        color: var(--terra);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.2rem;
+        text-transform: uppercase;
+      }
+      h1 { margin: 0 0 1rem; font-size: clamp(2.6rem, 6vw, 4.5rem); }
+      .intro { color: var(--muted); font-size: 1.1rem; line-height: 1.8; }
+      .prompt {
+        margin-top: 2rem;
+        padding: 1rem 1.2rem;
+        border-left: 3px solid var(--terra);
+        background: rgba(201,124,93,0.1);
+        color: var(--muted);
+        line-height: 1.7;
+      }
+      .form-panel {
+        padding: 1.5rem;
+        border: 1px solid rgba(143,107,74,0.28);
+        border-top: 0.45rem solid var(--terra);
+        border-radius: 1rem;
+        background: rgba(255,250,244,0.78);
+        box-shadow: 0 12px 30px rgba(143,107,74,0.1);
+      }
+      .form-panel h2 { margin: 0 0 1.25rem; color: var(--brown); font-size: 1.7rem; }
+      .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .field { display: flex; flex-direction: column; gap: 0.4rem; }
+      .field.full { grid-column: 1 / -1; }
+      label, legend { color: var(--dark); font-weight: 700; }
+      input, select, textarea {
+        width: 100%;
+        border: 1px solid rgba(143,107,74,0.3);
+        border-radius: 0.65rem;
+        padding: 0.8rem;
+        background: var(--white);
+        color: var(--dark);
+        font: inherit;
+      }
+      input:focus, select:focus, textarea:focus { outline: 3px solid rgba(201,124,93,0.3); outline-offset: 2px; }
+      textarea { min-height: 7rem; resize: vertical; }
+      fieldset { grid-column: 1 / -1; padding: 0; border: 0; }
+      .choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-top: 0.6rem; }
+      .choice { display: flex; align-items: center; gap: 0.5rem; padding: 0.7rem; border: 1px solid rgba(143,107,74,0.2); border-radius: 0.6rem; background: rgba(255,255,255,0.45); font-size: 0.9rem; font-weight: 400; }
+      .choice input { width: auto; accent-color: var(--terra); }
+      .submit-button {
+        border: 0;
+        border-radius: 999px;
+        padding: 0.9rem 1.4rem;
+        background: linear-gradient(135deg, var(--terra), var(--brown));
+        color: var(--white);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .submit-button:hover { filter: brightness(1.08); }
+      .form-note, .success-message { margin: 0.8rem 0 0; color: var(--muted); font-size: 0.85rem; line-height: 1.5; }
+      .success-message { min-height: 1.3rem; color: var(--brown); font-weight: 700; }
+      footer { padding: 2rem 1.5rem; background: var(--dark); border-top: 1px solid rgba(217,185,143,0.15); text-align: center; color: rgba(242,230,208,0.7); }
+      @media (max-width: 760px) {
+        .topbar-inner { justify-content: center; }
+        .volunteer-layout { grid-template-columns: 1fr; gap: 2rem; }
+        main { padding-top: 2.5rem; }
+      }
+      @media (max-width: 480px) { .form-grid, .choice-grid { grid-template-columns: 1fr; } .field.full, fieldset { grid-column: auto; } }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a class="brand" href="home.html"><span class="brand-mark">✦</span><span>New Dawn Foundation Uganda</span></a>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="home.html">Home</a>
+          <a href="about us.html">About Us</a>
+          <a href="mental health corner.html">Mental Health Corner</a>
+          <a href="events.html">Events</a>
+          <a href="support us.html">Support Us</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <a class="back-link" href="support us.html">&larr; Back to Support Us</a>
+        <div class="volunteer-layout">
+          <section aria-labelledby="volunteer-heading">
+            <p class="eyebrow">Bring what you can</p>
+            <h1 id="volunteer-heading">Your time can make space for hope.</h1>
+            <p class="intro">Tell us what interests you. Whether you enjoy listening, organising, teaching, or creating, there is a way to contribute that fits your strengths.</p>
+            <p class="prompt">There is no perfect volunteer profile. Start with what you care about, and we will explore the right opportunity together.</p>
+          </section>
+
+          <section class="form-panel" aria-labelledby="form-heading">
+            <h2 id="form-heading">Find your way to help</h2>
+            <form id="volunteer-form">
+              <div class="form-grid">
+                <div class="field"><label for="name">Full name</label><input id="name" name="name" required /></div>
+                <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" required /></div>
+                <div class="field"><label for="location">Town or district</label><input id="location" name="location" required /></div>
+                <div class="field"><label for="availability">Availability</label><select id="availability" name="availability" required><option value="">Choose one</option><option>Weekday mornings</option><option>Weekday afternoons</option><option>Evenings</option><option>Weekends</option><option>Flexible</option></select></div>
+                <fieldset>
+                  <legend>What would you like to help with?</legend>
+                  <div class="choice-grid">
+                    <label class="choice"><input type="checkbox" name="interest" value="Community outreach" /> Community outreach</label>
+                    <label class="choice"><input type="checkbox" name="interest" value="Listening and peer support" /> Listening and peer support</label>
+                    <label class="choice"><input type="checkbox" name="interest" value="Events and organising" /> Events and organising</label>
+                    <label class="choice"><input type="checkbox" name="interest" value="Creative or digital work" /> Creative or digital work</label>
+                  </div>
+                </fieldset>
+                <div class="field full"><label for="message">Tell us a little more <span>(optional)</span></label><textarea id="message" name="message" placeholder="Share your skills, experience, or what motivates you."></textarea></div>
+                <div class="field full"><button class="submit-button" type="submit">Send volunteer sign-up</button><p class="form-note">Your sign-up is sent securely to the New Dawn Foundation team.</p><p class="success-message" id="success-message" role="status"></p></div>
+              </div>
+            </form>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer>&copy; 2026 New Dawn Foundation Uganda</footer>
+    <script>
+      const volunteerForm = document.querySelector('#volunteer-form');
+      const successMessage = document.querySelector('#success-message');
+
+      volunteerForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        try {
+          const formData = new FormData(volunteerForm);
+          const interests = formData.getAll('interest');
+          const response = await fetch('/api/volunteers', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: formData.get('name'),
+              email: formData.get('email'),
+              location: formData.get('location'),
+              availability: formData.get('availability'),
+              interests,
+              message: formData.get('message') || ''
+            })
+          });
+          const result = await response.json();
+          successMessage.textContent = response.ok ? result.message : result.error;
+          if (response.ok) volunteerForm.reset();
+        } catch (error) {
+          successMessage.textContent = 'We could not send your sign-up right now. Please try again.';
+        }
+      });
+    </script>
+  </body>
+</html>
